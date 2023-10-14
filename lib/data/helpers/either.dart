@@ -8,7 +8,7 @@ class Either<Left, Right> {
   Either._(this.left, this.right, this.isLeft);
 
   factory Either.left(Left failure) {
-    return Either._(failure, null, false);
+    return Either._(failure, null, true);
   }
 
   factory Either.right(Right value) {

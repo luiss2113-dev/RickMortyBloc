@@ -1,22 +1,8 @@
-enum GenderCharacter {
-  // ignore: constant_identifier_names
-  FEMALE,
-  // ignore: constant_identifier_names
-  MALE,
-  // ignore: constant_identifier_names
-  UNKNOWN
-}
+enum GenderCharacter { female, male, unknown, empty }
 
-enum StatusCharacter {
-  // ignore: constant_identifier_names
-  ALIVE,
+enum StatusCharacter { alive, dead, unknown, empty }
 
-  // ignore: constant_identifier_names
-  DEAD,
-
-  // ignore: constant_identifier_names
-  UNKNOWN
-}
+enum CharacterSpecies { human, alien, empty }
 
 ///Errores de API para control en pantalla
 enum ErrorFailure {
@@ -25,4 +11,36 @@ enum ErrorFailure {
   noData,
   unauthorized,
   noInternet
+}
+
+final characterStatusValues = EnumValues({
+  "alive": StatusCharacter.alive,
+  "dead": StatusCharacter.dead,
+  "unknown": StatusCharacter.unknown,
+  "empty": StatusCharacter.empty
+});
+
+final charactersGenderValues = EnumValues({
+  "female": GenderCharacter.female,
+  "male": GenderCharacter.male,
+  "unknown": GenderCharacter.unknown,
+  "empty": GenderCharacter.empty
+});
+
+final characterSpeciesValues = EnumValues({
+  "human": CharacterSpecies.human,
+  "alien": CharacterSpecies.alien,
+  "empty": CharacterSpecies.empty
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

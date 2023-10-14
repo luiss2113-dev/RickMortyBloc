@@ -9,3 +9,14 @@ class HttpFailure {
 }
 
 class NetworkException {}
+
+  String getErrorBloc(ErrorFailure failure) {
+    return {
+          ErrorFailure.noData: "No hay datos",
+          ErrorFailure.noInternet: "No tienes conexión a internet",
+          ErrorFailure.serverError: "Error en el servidor",
+          ErrorFailure.unknownError: "Error desconocido",
+          ErrorFailure.unauthorized: "No autorizado",
+        }[failure] ??
+        "Error desconocido";
+  }

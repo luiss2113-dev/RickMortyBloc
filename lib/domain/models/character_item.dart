@@ -68,10 +68,10 @@ class ItemCharacter {
     factory ItemCharacter.fromJson(Map<String, dynamic> json) => ItemCharacter(
         id: json["id"],
         name: json["name"],
-        status: statusValues.map[json["status"]]!,
+        status: characterStatusValues.map[json["status"]]!,
         species: json["species"],
         type: json["type"],
-        gender: genderValues.map[json["gender"]]!,
+        gender: charactersGenderValues.map[json["gender"]]!,
         origin: json["origin"] == null ? null : Location.fromJson(json["origin"]),
         location: json["location"] == null ? null : Location.fromJson(json["location"]),
         image: json["image"],
@@ -83,10 +83,10 @@ class ItemCharacter {
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "status": statusValues.reverse[status],
+        "status": characterStatusValues.reverse[status],
         "species": species,
         "type": type,
-        "gender": genderValues.reverse[gender],
+        "gender": charactersGenderValues.reverse[gender],
         "origin": origin?.toJson(),
         "location": location?.toJson(),
         "image": image,
@@ -96,12 +96,6 @@ class ItemCharacter {
     };
 }
 
-
-final genderValues = EnumValues({
-    "Female": GenderCharacter.FEMALE,
-    "Male": GenderCharacter.MALE,
-    "unknown": GenderCharacter.UNKNOWN
-});
 
 class Location {
     final String? name;
@@ -136,20 +130,3 @@ class Location {
     };
 }
 
-final statusValues = EnumValues({
-    "Alive": StatusCharacter.ALIVE,
-    "Dead": StatusCharacter.DEAD,
-    "unknown": StatusCharacter.UNKNOWN
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-        reverseMap = map.map((k, v) => MapEntry(v, k));
-        return reverseMap;
-    }
-}

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:rick_morty_app/utils/constanst.dart';
+import 'package:rick_morty_app/utils/enums.dart';
 
 import './either.dart';
 
@@ -17,15 +18,13 @@ part 'parse_response_body.dart';
 class HttpApp {
   final Client _client;
   final String _baseUrl;
-  final String _apiKey;
 
   HttpApp({
     required Client client,
     String baseUrl = Constanst.baseUrl,
     String apiKey = '',
   })  : _client = client,
-        _baseUrl = baseUrl,
-        _apiKey = apiKey;
+        _baseUrl = baseUrl;
 
   Future<Either<HttpFailure, String>> request(
     String path, {
@@ -42,11 +41,7 @@ class HttpApp {
         url = url.replace(queryParameters: queryParameters);
       }
 
-      headers = {
-        'Content-Type': 'application/json',
-        _apiKey == '' ? '' : 'x-api-key': _apiKey,
-        ...headers
-      };
+      headers = {'Content-Type': 'application/json', ...headers};
 
       late final Response response;
 
@@ -57,10 +52,7 @@ class HttpApp {
         'queryParameters': queryParameters,
         'url': url.toString()
       };
-
-      print(headers);
-      print(url.toString());
-
+      
       switch (method) {
         case HttpRequest.get:
           response = await _client.get(url, headers: headers);

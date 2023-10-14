@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
+import 'package:rick_morty_app/data/helpers/http_app.dart';
+import 'package:rick_morty_app/domain/repository/rick_morty_respository_impl.dart';
+import 'package:rick_morty_app/domain/rick_morty_repository.dart';
+
+import 'data/datasource/remote/rick_morty_datasource_impl.dart';
 
 void main() {
-  runApp(const MyApp());
+  final datasource =
+      RickMortyRemoteDatasource(httpApp: HttpApp(client: Client()));
+  final repository =
+      RickAndMortyRepositoryImpl(rickMortyDataSource: datasource);
+
+  runApp(RepositoryProvider<RickMortyRepository>(
+      create: (_) => repository, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
