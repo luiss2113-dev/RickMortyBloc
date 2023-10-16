@@ -21,6 +21,8 @@ class Characters {
         results: results ?? this.results,
       );
 
+  bool get isNext => info?.next != null;
+
   factory Characters.fromRawJson(String str) =>
       Characters.fromJson(json.decode(str));
 

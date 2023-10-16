@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import '../widgets.dart';
 
 class TitleItem extends StatelessWidget {
-  const TitleItem({super.key});
+  final String title, sutitle;
+  final Function onTap;
+  final IconData icon;
+  const TitleItem(
+      {super.key,
+      required this.title,
+      required this.sutitle,
+      required this.onTap,
+      this.icon = Icons.live_tv_rounded});
 
   @override
   Widget build(BuildContext context) {
@@ -9,15 +18,14 @@ class TitleItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       margin: const EdgeInsets.all(15),
       elevation: 10,
-      child: const Column(
+      child: Row(
         children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 0),
-            title: Text('Titulo'),
-            subtitle: Text(
-                'Este es el subtitulo del card. Aqui podemos colocar descripción de este card.'),
-            leading: Icon(Icons.home),
+          Expanded(
+            child: DescriptionItem(title: title, subtitle: sutitle, icon: icon),
           ),
+          IconButton(
+              onPressed: () => onTap(),
+              icon: const Icon(Icons.navigate_next_sharp))
         ],
       ),
     );

@@ -1,38 +1,44 @@
+import 'response_info.dart';
+import 'episode_item_model.dart';
 import 'dart:convert';
 
-import 'episode_item.dart';
-import 'response_info.dart';
-
 class Episodes {
-    final ResponseInfo? info;
-    final List<EpisodeItem>? results;
+  final ResponseInfo? info;
+  final List<EpisodeItemModel>? results;
 
-    Episodes({
-        this.info,
-        this.results,
-    });
+  Episodes({
+    this.info,
+    this.results,
+  });
 
-    Episodes copyWith({
-        ResponseInfo? info,
-        List<EpisodeItem>? results,
-    }) => 
-        Episodes(
-            info: info ?? this.info,
-            results: results ?? this.results,
-        );
+  Episodes copyWith({
+    ResponseInfo? info,
+    List<EpisodeItemModel>? results,
+  }) =>
+      Episodes(
+        info: info ?? this.info,
+        results: results ?? this.results,
+      );
 
-    factory Episodes.fromRawJson(String str) => Episodes.fromJson(json.decode(str));
+  bool get isNext => info?.next != null;
 
-    String toRawJson() => json.encode(toJson());
+  factory Episodes.fromRawJson(String str) =>
+      Episodes.fromJson(json.decode(str));
 
-    factory Episodes.fromJson(Map<String, dynamic> json) => Episodes(
+  String toRawJson() => json.encode(toJson());
+
+  factory Episodes.fromJson(Map<String, dynamic> json) => Episodes(
         info: json["info"] == null ? null : ResponseInfo.fromJson(json["info"]),
-        results: json["results"] == null ? [] : List<EpisodeItem>.from(json["results"]!.map((x) => EpisodeItem.fromJson(x))),
-    );
+        results: json["results"] == null
+            ? []
+            : List<EpisodeItemModel>.from(
+                json["results"]!.map((x) => EpisodeItemModel.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "info": info?.toJson(),
-        "results": results == null ? [] : List<dynamic>.from(results!.map((x) => x.toJson())),
-    };
+        "results": results == null
+            ? []
+            : List<dynamic>.from(results!.map((x) => x.toJson())),
+      };
 }
-

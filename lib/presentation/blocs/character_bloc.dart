@@ -11,6 +11,7 @@ class CharacterCubit extends Cubit<CharacterState> {
   CharacterCubit(this._rickMortyRepository) : super(const CharacterInitial());
 
   Future<void> loadCharacters({int page = 1}) async {
+    if (!state.isNext) return;
     if (page == 1) {
       emit(state.copyWith(isLoading: true));
     }
@@ -26,16 +27,14 @@ class CharacterCubit extends Cubit<CharacterState> {
       emit(state.copyWith(
         error: "",
         isLoading: false,
-        charactersCurrent: [...state.charactersCurrent, ...?characters.results],
+        charactersCurrent: [...state.characters, ...?characters.results],
         page: page,
       ));
     });
   }
 
-  void setSelectedCharacter(CharacterItemModel character) {
-    emit(state.copyWith(
-      selected: character,
-    ));
+  void fetchMoreLocations() {
+    loadCharacters(page: state.page + 1);
   }
 
   Future<void> filterCharacters(CharacterFilters filters) async {
@@ -52,88 +51,64 @@ class CharacterCubit extends Cubit<CharacterState> {
         error: "",
         isLoading: false,
         charactersCurrent: characters.results ?? [],
+        isNext: characters.isNext,
       ));
     });
   }
 }
 
 class CharacterState extends Equatable {
-  final List<CharacterItemModel> charactersCurrent;
-  final CharacterItemModel? selected;
-  final int page;
-  final String error;
-  final bool isLoading;
+  final List<CharacterItemModel> _charactersCurrent;
+  final int _page;
+  final String _error;
+  final bool _isLoading;
+  final bool _isNext;
 
   const CharacterState({
-    this.charactersCurrent = const [],
-    this.selected,
-    this.page = 1,
-    this.error = '',
-    this.isLoading = true,
-  });
+    List<CharacterItemModel> charactersCurrent = const [],
+    int page = 1,
+    String error = '',
+    bool isLoading = true,
+    bool isNext = true,
+  })  : _isLoading = isLoading,
+        _error = error,
+        _page = page,
+        _charactersCurrent = charactersCurrent,
+        _isNext = isNext;
+
+  List<CharacterItemModel> get characters => _charactersCurrent;
+  int get page => _page;
+  bool get isLoading => _isLoading;
+  bool get isError => _error != '';
+  String get errorCurrent => _error;
+  bool get isNext => _isNext;
+  bool get isEmpty => _charactersCurrent.isEmpty;
 
   CharacterState copyWith({
     List<CharacterItemModel>? charactersCurrent,
-    CharacterItemModel? selected,
     int? page,
     String? error,
     bool? isLoading,
+    bool? isNext,
   }) {
     return CharacterState(
-      charactersCurrent: charactersCurrent ?? this.charactersCurrent,
-      selected: selected ?? this.selected,
-      page: page ?? this.page,
-      error: error ?? this.error,
-      isLoading: isLoading ?? this.isLoading,
+      charactersCurrent: charactersCurrent ?? _charactersCurrent,
+      page: page ?? _page,
+      error: error ?? _error,
+      isLoading: isLoading ?? _isLoading,
+      isNext: isNext ?? _isNext,
     );
   }
 
   @override
   String toString() {
-    return 'CharacterState(charactersCurrent: ${charactersCurrent.length}, selected: $selected, page: $page, error: $error, isLoading: $isLoading)';
+    return 'CharacterState(charactersCurrent: ${_charactersCurrent.length}, page: $_page, error: $_error, isLoading: $_isLoading, isNext: $_isNext)';
   }
 
   @override
-  List<Object> get props => [charactersCurrent, page, error, isLoading];
+  List<Object> get props => [_charactersCurrent, _error, _isLoading, _isNext];
 }
 
 class CharacterInitial extends CharacterState {
   const CharacterInitial() : super(page: 1);
-}
-
-class CharatersLoading extends CharacterState {
-  const CharatersLoading({
-    required List<CharacterItemModel> charactersCurrent,
-  }) : super(charactersCurrent: charactersCurrent);
-}
-
-class CharactersLoaded extends CharacterState {
-  const CharactersLoaded({
-    required List<CharacterItemModel> charactersCurrent,
-    ResponseInfo? info,
-    required int page,
-  }) : super(
-          page: page,
-          charactersCurrent: charactersCurrent,
-        );
-}
-
-class CharacterSelected extends CharacterState {
-  const CharacterSelected({
-    required List<CharacterItemModel> charactersCurrent,
-    CharacterItemModel? selected,
-    required int page,
-  }) : super(
-            charactersCurrent: charactersCurrent,
-            selected: selected,
-            page: page);
-}
-
-class CharactersError extends CharacterState {
-  final String error;
-
-  const CharactersError({this.error = ''});
-
-  @override
-  List<Object> get props => [error];
 }

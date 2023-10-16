@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CharacterImage extends StatelessWidget {
+  final double height;
+  final double width;
   final String url;
   const CharacterImage({
     super.key,
     required this.url,
+    this.height = 0.18,
+    this.width = 0.30,
   });
 
   @override
@@ -16,11 +20,11 @@ class CharacterImage extends StatelessWidget {
         shape: const CircleBorder(),
         elevation: 10,
         child: Container(
-          width: media.width * 0.30,
-          height: media.height * 0.18,
+          width: media.width * width,
+          height: media.height * height,
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: CircleAvatar(
-            radius: 70,
+            radius: 100,
             backgroundImage: NetworkImage(url),
           ),
         ),

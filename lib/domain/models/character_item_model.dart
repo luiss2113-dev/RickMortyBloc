@@ -1,32 +1,50 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import '../../utils/enums.dart';
 import '../entities/character_entity.dart';
 
 class CharacterItemModel extends CharacterEntity {
-  final String? species;
-  final String? type;
-  final GenderCharacter? gender;
-  final Location? origin;
-  final Location? location;
-  final List<String>? episode;
-  final String? url;
-  final DateTime? created;
+  final String? _species;
+  final String? _type;
+  final GenderCharacter? _gender;
+  final Location? _origin;
+  final Location? _location;
+  final List<String>? _episode;
+  final String? _url;
+  final DateTime? _created;
 
   CharacterItemModel({
     super.id,
     super.name,
     super.status,
-    this.species,
-    this.type,
-    this.gender,
-    this.origin,
-    this.location,
+    String? species,
+    String? type,
+    GenderCharacter? gender,
+    Location? origin,
+    Location? location,
     super.image,
-    this.episode,
-    this.url,
-    this.created,
-  });
+    List<String>? episode,
+    String? url,
+    DateTime? created,
+  })  : _created = created,
+        _url = url,
+        _location = location,
+        _origin = origin,
+        _gender = gender,
+        _species = species,
+        _type = type,
+        _episode = episode;
+
+  String get especies => _species ?? "N/A";
+  IconData get status => statusIcon(characterStatus);
+  IconData get genreIconP => genreIcon(_gender ?? GenderCharacter.empty);
+  String get genre =>
+      charactersGenderValues.reverse[_gender ?? GenderCharacter.empty] ?? "N/A";
+  String get origen => _origin?.name ?? "N/A";
+  String get location => _location?.name ?? "N/A";
+  int get episodeCount => _episode?.length ?? 0;
 
   CharacterItemModel copyWith({
     int? id,
@@ -46,15 +64,15 @@ class CharacterItemModel extends CharacterEntity {
         id: id ?? characterId,
         name: name ?? characterName,
         status: status ?? characterStatus,
-        species: species ?? this.species,
-        type: type ?? this.type,
-        gender: gender ?? this.gender,
-        origin: origin ?? this.origin,
-        location: location ?? this.location,
+        species: species ?? _species,
+        type: type ?? _type,
+        gender: gender ?? _gender,
+        origin: origin ?? _origin,
+        location: location ?? _location,
         image: image ?? characterImage,
-        episode: episode ?? this.episode,
-        url: url ?? this.url,
-        created: created ?? this.created,
+        episode: episode ?? _episode,
+        url: url ?? _url,
+        created: created ?? _created,
       );
 
   factory CharacterItemModel.fromRawJson(String str) =>
@@ -62,7 +80,8 @@ class CharacterItemModel extends CharacterEntity {
 
   String toRawJson() => json.encode(toJson());
 
-  factory CharacterItemModel.fromJson(Map<String, dynamic> json) => CharacterItemModel(
+  factory CharacterItemModel.fromJson(Map<String, dynamic> json) =>
+      CharacterItemModel(
         id: json["id"],
         name: json["name"],
         status: characterStatusValues.map[json["status"]]!,
@@ -87,16 +106,16 @@ class CharacterItemModel extends CharacterEntity {
         "id": characterId,
         "name": characterName,
         "status": characterStatusValues.reverse[characterStatus],
-        "species": species,
-        "type": type,
-        "gender": charactersGenderValues.reverse[gender],
-        "origin": origin?.toJson(),
-        "location": location?.toJson(),
+        "species": _species,
+        "type": _type,
+        "gender": charactersGenderValues.reverse[_gender],
+        "origin": _origin?.toJson(),
+        "location": _location?.toJson(),
         "image": characterStatus,
         "episode":
-            episode == null ? [] : List<dynamic>.from(episode!.map((x) => x)),
-        "url": url,
-        "created": created?.toIso8601String(),
+            _episode == null ? [] : List<dynamic>.from(_episode!.map((x) => x)),
+        "url": _url,
+        "created": _created?.toIso8601String(),
       };
 }
 

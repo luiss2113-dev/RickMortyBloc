@@ -1,9 +1,9 @@
-import '../global/widgets.dart';
 import 'widget/widget.dart';
 import 'package:rick_morty_app/presentation/screens/global/widgets/error_view.dart';
 import 'package:rick_morty_app/presentation/blocs/character_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../global/widgets.dart';
 
 class CharactersScreen extends StatelessWidget {
   const CharactersScreen({super.key});
@@ -14,20 +14,15 @@ class CharactersScreen extends StatelessWidget {
       alignment: Alignment.center,
       child: SafeArea(child: BlocBuilder<CharacterCubit, CharacterState>(
           builder: (context, state) {
-            
-        if (state.error != '') {
+        if (state.isError) {
           return CustomError(
-            errorDetails: FlutterErrorDetails(exception: state.error),
+            errorDetails: FlutterErrorDetails(exception: state.errorCurrent),
             onRefresh: () => context.read<CharacterCubit>().loadCharacters(),
           );
         }
 
-        if (state.charactersCurrent.isNotEmpty) {
-          return CharacterRender(
-              characters: state.charactersCurrent,
-              onfechMore: () => context
-                  .read<CharacterCubit>()
-                  .loadCharacters(page: state.page + 1));
+        if (!state.isEmpty) {
+          return const CharacterRender();
         }
 
         return const CircularProgressIndicator(); //TODO: implement shimmer view

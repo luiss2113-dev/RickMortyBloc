@@ -1,17 +1,17 @@
-import 'widget.dart';
-import 'package:rick_morty_app/presentation/blocs/blocs.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../blocs/blocs.dart';
+import 'package:flutter/material.dart';
 import '../../global/widgets.dart';
 
-class CharacterRender extends StatefulWidget {
-  const CharacterRender({super.key});
+class LocationRender extends StatefulWidget {
+  const LocationRender({super.key});
 
   @override
-  State<CharacterRender> createState() => _CharacterRenderState();
+  State<LocationRender> createState() => _LocationRenderState();
 }
 
-class _CharacterRenderState extends State<CharacterRender> {
+class _LocationRenderState extends State<LocationRender> {
   late ScrollController _scrollController;
 
   @override
@@ -25,7 +25,7 @@ class _CharacterRenderState extends State<CharacterRender> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      context.read<CharacterCubit>().fetchMoreLocations();
+      context.read<LocationCubit>().fetchMoreLocations();
     }
   }
 
@@ -33,24 +33,22 @@ class _CharacterRenderState extends State<CharacterRender> {
   Widget build(BuildContext context) {
     return Column(children: [
       const CustomTitle(
-        title: 'Personajes',
+        title: 'Ubicaciones',
       ),
       Expanded(
-        child: BlocConsumer<CharacterCubit, CharacterState>(
+        child: BlocConsumer<LocationCubit, LocationState>(
           listener: (context, state) {},
           builder: (context, state) {
             return ListView.builder(
-              itemCount: state.characters.length,
+              itemCount: state.locations.length, //locationCounter.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
-                return CharacterItem(
-                  character: state.characters[index],
-                  onSelected: () {
-                    modalDetailsContent(
-                        context,
-                        CharacterDetail(
-                          character: state.characters[index],
-                        ));
+                return TitleItem(
+                  title: state.locations[index].locationName,
+                  sutitle: state.locations[index].locationType,
+                  icon: Icons.location_searching,
+                  onTap: () {
+
                   },
                 );
               },

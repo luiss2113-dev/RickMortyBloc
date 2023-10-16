@@ -31,7 +31,9 @@ class CharacterItem extends StatelessWidget {
           ),
           Align(
               alignment: Alignment.centerLeft,
-              child: CharacterImage(url: character.characterImage)),
+              child: Hero(
+                  tag: character.tagHero,
+                  child: CharacterImage(url: character.characterImage))),
         ],
       ),
     );

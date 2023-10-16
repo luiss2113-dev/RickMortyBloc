@@ -47,11 +47,11 @@ void main() {
     expect(episodes.right?.results?.length, 3);
 
     episodes.when((p0) => expect('error', 'error'), (response) {
-      expect(response.results![0].name, 'Pilot');
+      expect(response.results![0].episodeName, 'Pilot');
       expect(response.results![0].episode, 'S01E01');
     });
   });
-  
+
   test('Filter Episodes, call api to get episodes with 3 items, success',
       () async {
     final datasource = _getDatasource('test/responses/episodes.json');
@@ -62,7 +62,7 @@ void main() {
     expect(episodes.right?.results?.length, 3);
 
     episodes.when((p0) => expect('error', 'error'), (response) {
-      expect(response.results![0].name, 'Pilot');
+      expect(response.results![0].episodeName, 'Pilot');
       expect(response.results![0].episode, 'S01E01');
     });
   });
@@ -75,7 +75,7 @@ void main() {
     expect(episodes.right?.results?.length, 4);
 
     episodes.when((p0) => expect('error', 'error'), (response) {
-      expect(response.results![0].type, 'Planet');
+      expect(response.results![0].locationType, 'Planet');
       expect(response.results![3].dimension, "unknown");
     });
   });
@@ -90,7 +90,7 @@ void main() {
     expect(episodes.right?.results?.length, 4);
 
     episodes.when((p0) => expect('error', 'error'), (response) {
-      expect(response.results![0].type, 'Planet');
+      expect(response.results![0].locationType, 'Planet');
       expect(response.results![3].dimension, "unknown");
     });
   });

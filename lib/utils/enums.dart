@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum GenderCharacter { female, male, unknown, empty }
 
 enum StatusCharacter { alive, dead, unknown, empty }
@@ -32,6 +34,26 @@ final charactersGenderValues = EnumValues({
   "unknown": GenderCharacter.unknown,
   "Empty": GenderCharacter.empty
 });
+
+IconData characterSpecieIcon(CharacterSpecies specie) => [
+      Icons.person,
+      Icons.person_off_rounded,
+      Icons.radio_button_unchecked_rounded
+    ][specie.index];
+
+IconData statusIcon(StatusCharacter status) => [
+      Icons.fireplace,
+      Icons.fireplace_outlined,
+      Icons.radio_button_unchecked_rounded,
+      Icons.fiber_manual_record_outlined
+    ][status.index];
+
+IconData genreIcon(GenderCharacter genre) => [
+      Icons.face_2,
+      Icons.face_outlined,
+      Icons.radio_button_unchecked_rounded,
+      Icons.fiber_manual_record_outlined
+    ][genre.index];
 
 class EnumValues<T> {
   Map<String, T> map;

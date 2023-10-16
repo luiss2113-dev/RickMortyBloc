@@ -22,4 +22,5 @@ class CharacterEntity {
   int get characterId => _id ?? 0;
   StatusCharacter get characterStatus => _status;
   String get characterImage => _image ?? Constanst.defaultImageUrl;
+  String get tagHero => 'character_$characterId';
 }

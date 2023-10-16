@@ -1,17 +1,18 @@
-import 'widget.dart';
 import 'package:rick_morty_app/presentation/blocs/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/widgets.dart';
 
-class CharacterRender extends StatefulWidget {
-  const CharacterRender({super.key});
+class EpisodeRender extends StatefulWidget {
+  const EpisodeRender({
+    super.key,
+  });
 
   @override
-  State<CharacterRender> createState() => _CharacterRenderState();
+  State<EpisodeRender> createState() => _EpisodeRenderState();
 }
 
-class _CharacterRenderState extends State<CharacterRender> {
+class _EpisodeRenderState extends State<EpisodeRender> {
   late ScrollController _scrollController;
 
   @override
@@ -25,7 +26,7 @@ class _CharacterRenderState extends State<CharacterRender> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      context.read<CharacterCubit>().fetchMoreLocations();
+      context.read<EpisodeCubit>().fetchMoreLocations();
     }
   }
 
@@ -33,25 +34,20 @@ class _CharacterRenderState extends State<CharacterRender> {
   Widget build(BuildContext context) {
     return Column(children: [
       const CustomTitle(
-        title: 'Personajes',
+        title: 'Episodios',
       ),
       Expanded(
-        child: BlocConsumer<CharacterCubit, CharacterState>(
+        child: BlocConsumer<EpisodeCubit, EpisodeState>(
           listener: (context, state) {},
           builder: (context, state) {
             return ListView.builder(
-              itemCount: state.characters.length,
+              itemCount: state.episodes.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
-                return CharacterItem(
-                  character: state.characters[index],
-                  onSelected: () {
-                    modalDetailsContent(
-                        context,
-                        CharacterDetail(
-                          character: state.characters[index],
-                        ));
-                  },
+                return TitleItem(
+                  title: state.episodes[index].episodeName,
+                  sutitle: state.episodes[index].episode,
+                  onTap: () {},
                 );
               },
             );

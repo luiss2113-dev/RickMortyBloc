@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:rick_morty_app/presentation/screens/screens.dart';
-
+import 'package:flutter/material.dart';
 import 'global/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         LocationsScreen()
       ][selectedPageIndex],
       bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         height: 60,
         elevation: 2,
         selectedIndex: selectedPageIndex,
