@@ -14,13 +14,13 @@ void main() {
   test('Characters, call api to parse rick and morty character, success',
       () async {
     final datasource = _getDatasource('test/responses/characters.json');
-    final character = await datasource.getCharacters(page: 2);
+    final character = await datasource.getCharacters(page: 1);
     expect(character.isLeft, false);
     expect(character.right?.results?.length, 3);
 
     character.when((p0) => expect('error', 'error'), (response) {
-      expect(response.results![0].name, 'Rick Sanchez');
-      expect(response.results![0].status, StatusCharacter.alive);
+      expect(response.results![0].characterName, 'Rick Sanchez');
+      expect(response.results![0].characterStatus, StatusCharacter.alive);
     });
   });
 
@@ -34,8 +34,8 @@ void main() {
     expect(character.right?.results?.length, 3);
 
     character.when((p0) => expect('error', 'error'), (response) {
-      expect(response.results![0].name, 'Rick Sanchez');
-      expect(response.results![0].status, StatusCharacter.alive);
+      expect(response.results![0].characterName, 'Rick Sanchez');
+      expect(response.results![0].characterStatus, StatusCharacter.alive);
     });
   });
 
@@ -51,6 +51,7 @@ void main() {
       expect(response.results![0].episode, 'S01E01');
     });
   });
+  
   test('Filter Episodes, call api to get episodes with 3 items, success',
       () async {
     final datasource = _getDatasource('test/responses/episodes.json');
@@ -78,6 +79,7 @@ void main() {
       expect(response.results![3].dimension, "unknown");
     });
   });
+
   test('Filter Locations, call api to get locations with 3 items, success',
       () async {
     final datasource = _getDatasource('test/responses/locations.json');

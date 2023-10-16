@@ -50,8 +50,15 @@ class RickMortyRemoteDatasource {
           await _httpApp.request('${Constanst.rickMortyEpisodes}$prefs');
 
       return result.when((failure) => Either.left(getError(failure)), (body) {
-        final character = Characters.fromRawJson(body);
-        return Either.right(character);
+        try {
+          final characters = Characters.fromRawJson(body);
+          if (characters.results == null || characters.results == []) {
+            return Either.left(ErrorFailure.noData);
+          }
+          return Either.right(characters);
+        } catch (e) {
+          return Either.left(ErrorFailure.noData);
+        }
       });
     } catch (error) {
       return Either.left(ErrorFailure.unknownError);
@@ -64,8 +71,15 @@ class RickMortyRemoteDatasource {
           await _httpApp.request('${Constanst.rickMortyEpisodes}?page=$page');
 
       return result.when((failure) => Either.left(getError(failure)), (body) {
-        final episodes = Episodes.fromRawJson(body);
-        return Either.right(episodes);
+        try {
+          final episodes = Episodes.fromRawJson(body);
+          if (episodes.results == null || episodes.results == []) {
+            return Either.left(ErrorFailure.noData);
+          }
+          return Either.right(episodes);
+        } catch (e) {
+          return Either.left(ErrorFailure.noData);
+        }
       });
     } catch (error) {
       return Either.left(ErrorFailure.unknownError);
@@ -81,8 +95,15 @@ class RickMortyRemoteDatasource {
           await _httpApp.request('${Constanst.rickMortyEpisodes}$prefs');
 
       return result.when((failure) => Either.left(getError(failure)), (body) {
-        final episodes = Episodes.fromRawJson(body);
-        return Either.right(episodes);
+        try {
+          final episodes = Episodes.fromRawJson(body);
+          if (episodes.results == null || episodes.results == []) {
+            return Either.left(ErrorFailure.noData);
+          }
+          return Either.right(episodes);
+        } catch (e) {
+          return Either.left(ErrorFailure.noData);
+        }
       });
     } catch (error) {
       return Either.left(ErrorFailure.unknownError);
@@ -95,8 +116,15 @@ class RickMortyRemoteDatasource {
           await _httpApp.request('${Constanst.rickMortyLocations}?page=$page');
 
       return result.when((failure) => Either.left(getError(failure)), (body) {
-        final locations = Locations.fromRawJson(body);
-        return Either.right(locations);
+        try {
+          final locations = Locations.fromRawJson(body);
+          if (locations.results == null || locations.results == []) {
+            return Either.left(ErrorFailure.noData);
+          }
+          return Either.right(locations);
+        } catch (e) {
+          return Either.left(ErrorFailure.noData);
+        }
       });
     } catch (error) {
       return Either.left(ErrorFailure.unknownError);
@@ -113,8 +141,15 @@ class RickMortyRemoteDatasource {
           await _httpApp.request('${Constanst.rickMortyEpisodes}$prefs');
 
       return result.when((failure) => Either.left(getError(failure)), (body) {
-        final locations = Locations.fromRawJson(body);
-        return Either.right(locations);
+        try {
+          final locations = Locations.fromRawJson(body);
+          if (locations.results == null || locations.results == []) {
+            return Either.left(ErrorFailure.noData);
+          }
+          return Either.right(locations);
+        } catch (e) {
+          return Either.left(ErrorFailure.noData);
+        }
       });
     } catch (error) {
       return Either.left(ErrorFailure.unknownError);

@@ -14,23 +14,23 @@ enum ErrorFailure {
 }
 
 final characterStatusValues = EnumValues({
-  "alive": StatusCharacter.alive,
-  "dead": StatusCharacter.dead,
+  "Alive": StatusCharacter.alive,
+  "Dead": StatusCharacter.dead,
   "unknown": StatusCharacter.unknown,
   "empty": StatusCharacter.empty
 });
 
-final charactersGenderValues = EnumValues({
-  "female": GenderCharacter.female,
-  "male": GenderCharacter.male,
-  "unknown": GenderCharacter.unknown,
-  "empty": GenderCharacter.empty
+final characterSpeciesValues = EnumValues({
+  "Human": CharacterSpecies.human,
+  "Alien": CharacterSpecies.alien,
+  "Empty": CharacterSpecies.empty
 });
 
-final characterSpeciesValues = EnumValues({
-  "human": CharacterSpecies.human,
-  "alien": CharacterSpecies.alien,
-  "empty": CharacterSpecies.empty
+final charactersGenderValues = EnumValues({
+  "Female": GenderCharacter.female,
+  "Male": GenderCharacter.male,
+  "unknown": GenderCharacter.unknown,
+  "Empty": GenderCharacter.empty
 });
 
 class EnumValues<T> {

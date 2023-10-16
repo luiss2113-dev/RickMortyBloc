@@ -14,7 +14,7 @@ import 'character_bloc_test.mocks.dart';
 @GenerateMocks([RickMortyRepository])
 void main() {
   group('Bloc Characters for test', () {
-    final character = ItemCharacter(
+    final character = CharacterItemModel(
       created: DateTime.now(),
       name: 'Rick',
       episode: ['Caramelo', 'cafe', 'postre'],
@@ -26,7 +26,7 @@ void main() {
     final mockRepo = MockRickMortyRepository();
 
     blocTest(
-        'Characters are loaded correcty when I call getCharacters reporitory function',
+        'Characters are loaded correcty when call firts time getCharacters reporitory function',
         build: () {
           when(mockRepo.getCharacters())
               .thenAnswer((_) async => Future.value(Either.right(response)));
@@ -36,10 +36,34 @@ void main() {
         act: (bloc) => bloc.loadCharacters(),
         expect: () {
           return [
-            CharatersLoading(),
+            const CharacterState(
+              page: 1,
+              isLoading: true,
+            ),
             CharacterState(
-                charactersCurrent: response.results!, info: response.info),
-            CharactersLoaded(),
+              charactersCurrent: response.results!,
+              page: 1,
+              isLoading: false,
+            )
+          ];
+        });
+
+    blocTest(
+        'Characters are loaded correcty when calling second or more times getCharacters reporitory function',
+        build: () {
+          when(mockRepo.getCharacters(page: 2))
+              .thenAnswer((_) async => Future.value(Either.right(response)));
+
+          return CharacterCubit(mockRepo);
+        },
+        act: (bloc) => bloc.loadCharacters(page: 2),
+        expect: () {
+          return [
+            CharacterState(
+              charactersCurrent: response.results!,
+              page: 2,
+              isLoading: false,
+            )
           ];
         });
 
@@ -51,28 +75,39 @@ void main() {
 
           return CharacterCubit(mockRepo);
         },
-        act: (bloc) => bloc.loadCharacters(),
+        act: (bloc) => bloc.loadCharacters(page: 1),
         expect: () {
           return [
-            CharatersLoading(),
-            CharacterState(
-                charactersCurrent: response.results!, info: response.info),
-            CharactersLoaded(),
+            const CharacterState(
+              page: 1,
+              isLoading: true,
+            ),
+            const CharacterState(
+              page: 1,
+              isLoading: false,
+            )
           ];
         });
 
     blocTest('Characters error exceptions',
         build: () {
           when(mockRepo.getCharacters()).thenAnswer((_) async =>
-              await Future.value(
-                  Either.left(ErrorFailure.noData)));
+              await Future.value(Either.left(ErrorFailure.noData)));
 
           return CharacterCubit(mockRepo);
         },
-        act: (bloc) => bloc.loadCharacters(),
+        act: (bloc) => bloc.loadCharacters(page: 1),
         expect: () {
-          return [CharatersLoading(),
-          CharactersError(error: getErrorBloc(ErrorFailure.noData))];
+          return [
+            const CharacterState(
+              page: 1,
+              isLoading: true,
+            ),
+            CharacterState(
+                page: 1,
+                isLoading: false,
+                error: getErrorBloc(ErrorFailure.noData))
+          ];
         });
   });
 }

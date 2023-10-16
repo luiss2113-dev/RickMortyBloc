@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'character_item.dart';
+import 'character_item_model.dart';
 import 'response_info.dart';
 
 class Characters {
   final ResponseInfo? info;
-  final List<ItemCharacter>? results;
+  final List<CharacterItemModel>? results;
 
   Characters({
     this.info,
@@ -14,7 +14,7 @@ class Characters {
 
   Characters copyWith({
     ResponseInfo? info,
-    List<ItemCharacter>? results,
+    List<CharacterItemModel>? results,
   }) =>
       Characters(
         info: info ?? this.info,
@@ -30,8 +30,8 @@ class Characters {
         info: json["info"] == null ? null : ResponseInfo.fromJson(json["info"]),
         results: json["results"] == null
             ? []
-            : List<ItemCharacter>.from(
-                json["results"]!.map((x) => ItemCharacter.fromJson(x))),
+            : List<CharacterItemModel>.from(
+                json["results"]!.map((x) => CharacterItemModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
