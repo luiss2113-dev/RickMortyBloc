@@ -7,3 +7,4 @@ export './widgets/description_item.dart';
 export './widgets/header_screen.dart';
 export './widgets/container_detail.dart';
 export './widgets/detail_item.dart';
+export './widgets/searcher.dart';

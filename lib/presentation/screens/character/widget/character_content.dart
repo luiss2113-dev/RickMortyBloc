@@ -32,40 +32,44 @@ class CharacterContent extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 25),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ListTile(
-                        title: Text(
-                          _title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                fontSize: 30,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                          maxLines: 2,
-                        ),
-                        subtitle: Text(
-                          _status,
-                          style: Theme.of(context).textTheme.labelLarge,
-                          textAlign: TextAlign.justify,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: () => _moreDetails(),
-                        icon: const Icon(Icons.navigate_next_sharp))
-                  ],
-                ),
-              ),
+              bodyContent(context),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Padding bodyContent(BuildContext context) {
+    return Padding(
+              padding: const EdgeInsets.only(left: 25),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      title: Text(
+                        _title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall!
+                            .copyWith(
+                              fontSize: 30,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                        maxLines: 2,
+                      ),
+                      subtitle: Text(
+                        _status,
+                        style: Theme.of(context).textTheme.labelLarge,
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () => _moreDetails(),
+                      icon: const Icon(Icons.navigate_next_sharp))
+                ],
+              ),
+            );
   }
 }

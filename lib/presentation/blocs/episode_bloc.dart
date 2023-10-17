@@ -35,17 +35,10 @@ class EpisodeCubit extends Cubit<EpisodeState> {
   void fetchMoreLocations() {
     loadEpisodes(page: state.page + 1);
   }
-
-  void selectedLocation(
-    EpisodeItemModel episode,
-  ) {
-    emit(state.copyWith(episode: episode));
-  }
 }
 
 class EpisodeState extends Equatable {
   final List<EpisodeItemModel> _episodes;
-  final EpisodeItemModel? _episode;
   final String _error;
   final bool _isLoading;
   final int _page;
@@ -56,20 +49,17 @@ class EpisodeState extends Equatable {
     String error = '',
     bool isLoading = true,
     bool isNext = true,
-    EpisodeItemModel? episode,
     int page = 1,
   })  : _episodes = episodesCurrent,
         _error = error,
         _isLoading = isLoading,
         _page = page,
-        _isNext = isNext,
-        _episode = episode;
+        _isNext = isNext;
 
   List<EpisodeItemModel> get episodes => _episodes;
   String get error => _error;
   bool get isLoading => _isLoading;
   int get page => _page;
-  EpisodeItemModel? get episode => _episode;
   bool get isError => _error != '';
   bool get isNext => _isNext;
   bool get isEmpty => _episodes.isEmpty;
@@ -88,7 +78,6 @@ class EpisodeState extends Equatable {
     bool? isLoading,
     int? page,
     bool? isNext,
-    EpisodeItemModel? episode,
   }) {
     return EpisodeState(
       episodesCurrent: episodesCurrent ?? _episodes,
@@ -96,7 +85,6 @@ class EpisodeState extends Equatable {
       isLoading: isLoading ?? _isLoading,
       page: page ?? _page,
       isNext: isNext ?? _isNext,
-      episode: episode ?? _episode,
     );
   }
 }

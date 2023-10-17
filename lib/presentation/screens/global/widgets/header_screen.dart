@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../widgets.dart';
 
 class HeaderWidgets extends StatelessWidget {
@@ -23,18 +22,20 @@ class HeaderWidgets extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10, right: 10),
-            child: IconButton(
-              icon: const Icon(Icons.search, size: 35),
-              onPressed: () {
-                print('Expande searcher');
-              },
-            ),
-          ),
-        )
+        //Align(
+        //  alignment: Alignment.centerRight,
+        //  child: Padding(
+        //    padding: const EdgeInsets.only(top: 10, right: 10),
+        //    child: IconButton(
+        //      icon: const Icon(Icons.search, size: 35),
+        //      onPressed: () {
+        //        showSearch(
+        //            context: context,
+        //            delegate: CustomSearchDelegate());
+        //      },
+        //    ),
+        //  ),
+        //)
       ],
     );
   }
