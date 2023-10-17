@@ -25,16 +25,14 @@ class _CharacterRenderState extends State<CharacterRender> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      context.read<CharacterCubit>().fetchMoreLocations();
+      context.read<CharacterCubit>().fetchMoreCharacters();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const CustomTitle(
-        title: 'Personajes',
-      ),
+      const HeaderWidgets(title: 'Personajes'),
       Expanded(
         child: BlocConsumer<CharacterCubit, CharacterState>(
           listener: (context, state) {},
@@ -45,13 +43,6 @@ class _CharacterRenderState extends State<CharacterRender> {
               itemBuilder: (context, index) {
                 return CharacterItem(
                   character: state.characters[index],
-                  onSelected: () {
-                    modalDetailsContent(
-                        context,
-                        CharacterDetail(
-                          character: state.characters[index],
-                        ));
-                  },
                 );
               },
             );

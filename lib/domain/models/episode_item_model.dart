@@ -3,20 +3,26 @@ import 'dart:convert';
 import '../entities/entities.dart';
 
 class EpisodeItemModel extends EpisodeEntity {
-  final String? airDate;
-  final List<String>? characters;
-  final String? url;
-  final DateTime? created;
+  final String? _airDate;
+  final List<String>? _characters;
+  final String? _url;
+  final DateTime? _created;
 
   const EpisodeItemModel({
     super.id,
     super.name,
-    this.airDate,
+    String? airDate,
     super.episode,
-    this.characters,
-    this.url,
-    this.created,
-  });
+    List<String>? characters,
+    String? url,
+    DateTime? created,
+  })  : _created = created,
+        _url = url,
+        _characters = characters,
+        _airDate = airDate;
+
+  String get airDate => _airDate ?? DateTime.now().toIso8601String();
+  int get countCharacters => _characters?.length ?? 0;
 
   EpisodeItemModel copyWith({
     int? id,
@@ -30,11 +36,11 @@ class EpisodeItemModel extends EpisodeEntity {
       EpisodeItemModel(
         id: id ?? episodeId,
         name: name ?? episodeName,
-        airDate: airDate ?? this.airDate,
+        airDate: airDate ?? _airDate,
         episode: episode ?? this.episode,
-        characters: characters ?? this.characters,
-        url: url ?? this.url,
-        created: created ?? this.created,
+        characters: characters ?? _characters,
+        url: url ?? _url,
+        created: created ?? _created,
       );
 
   factory EpisodeItemModel.fromRawJson(String str) =>
@@ -59,12 +65,12 @@ class EpisodeItemModel extends EpisodeEntity {
   Map<String, dynamic> toJson() => {
         "id": episodeId,
         "name": episodeName,
-        "air_date": airDate,
+        "air_date": _airDate,
         "episode": episode,
-        "characters": characters == null
+        "characters": _characters == null
             ? []
-            : List<dynamic>.from(characters!.map((x) => x)),
-        "url": url,
-        "created": created?.toIso8601String(),
+            : List<dynamic>.from(_characters!.map((x) => x)),
+        "url": _url,
+        "created": _created?.toIso8601String(),
       };
 }

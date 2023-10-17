@@ -14,18 +14,22 @@ class CharacterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
+    final orientation = MediaQuery.of(context).orientation;
+
     return Padding(
-      padding: const EdgeInsets.only(left: 8, top: 8),
+      padding: const EdgeInsets.only(left: 8, top: 8, right: 10),
       child: Card(
         shape: const CircleBorder(),
         elevation: 10,
         child: Container(
-          width: media.width * width,
-          height: media.height * height,
-          padding: const EdgeInsets.symmetric(vertical: 2),
+          width: media.width *
+              (orientation == Orientation.portrait ? width : 0.10),
+          height: media.height *
+              (orientation == Orientation.portrait ? height : 0.60),
           child: CircleAvatar(
-            radius: 100,
-            backgroundImage: NetworkImage(url),
+            backgroundImage: NetworkImage(
+              url,
+            ),
           ),
         ),
       ),

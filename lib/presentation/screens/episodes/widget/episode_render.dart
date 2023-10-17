@@ -1,7 +1,10 @@
-import 'package:rick_morty_app/presentation/blocs/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:rick_morty_app/presentation/blocs/blocs.dart';
+
 import '../../global/widgets.dart';
+import 'widget.dart';
 
 class EpisodeRender extends StatefulWidget {
   const EpisodeRender({
@@ -33,9 +36,7 @@ class _EpisodeRenderState extends State<EpisodeRender> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const CustomTitle(
-        title: 'Episodios',
-      ),
+      const HeaderWidgets(title: 'Episodios'),
       Expanded(
         child: BlocConsumer<EpisodeCubit, EpisodeState>(
           listener: (context, state) {},
@@ -45,10 +46,14 @@ class _EpisodeRenderState extends State<EpisodeRender> {
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return TitleItem(
-                  title: state.episodes[index].episodeName,
-                  sutitle: state.episodes[index].episode,
-                  onTap: () {},
-                );
+                    title: state.episodes[index].episodeName,
+                    sutitle: state.episodes[index].episode,
+                    onTap: () => modalDetailsContent(
+                          context: context,
+                          child: EpisodeDetail(
+                            episode: state.episodes[index],
+                          ),
+                        ));
               },
             );
           },

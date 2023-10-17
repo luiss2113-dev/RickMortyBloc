@@ -4,3 +4,6 @@ export './widgets/show_item.dart';
 export './widgets/custom_title.dart';
 export './widgets/modal_detail.dart';
 export './widgets/description_item.dart';
+export './widgets/header_screen.dart';
+export './widgets/container_detail.dart';
+export './widgets/detail_item.dart';

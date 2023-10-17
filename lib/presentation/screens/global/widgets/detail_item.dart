@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 
-class CharacterDetailItem extends StatelessWidget {
+class DetailItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  const CharacterDetailItem({
+  const DetailItem({
     super.key,
     required this.title,
     required this.icon,

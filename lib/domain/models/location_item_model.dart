@@ -22,6 +22,8 @@ class LocationItemModel extends LocationEntity {
         _dimension = dimension;
 
   String? get dimension => _dimension;
+  int get countResidents => _residents?.length ?? 0;
+  
 
   LocationItemModel copyWith({
     int? id,

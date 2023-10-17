@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'character_image.dart';
-import 'character_content.dart';
+
+import 'package:rick_morty_app/domain/models/models.dart';
+
 import '../../../../utils/enums.dart';
-import '../../../../domain/entities/character_entity.dart';
+import '../../global/widgets.dart';
+import 'widget.dart';
 
 class CharacterItem extends StatelessWidget {
-  final CharacterEntity character;
-  final Function onSelected;
+  final CharacterItemModel character;
   const CharacterItem({
     super.key,
     required this.character,
-    required this.onSelected,
   });
 
   @override
@@ -26,7 +26,11 @@ class CharacterItem extends StatelessWidget {
             child: CharacterContent(
               title: character.characterName,
               status: characterStatusValues.reverse[character.characterStatus]!,
-              moreDetails: () => onSelected(),
+              moreDetails: () => modalDetailsContent(
+                  context: context,
+                  child: CharacterDetail(
+                    character: character,
+                  )),
             ),
           ),
           Align(

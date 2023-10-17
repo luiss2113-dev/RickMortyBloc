@@ -16,44 +16,54 @@ class CharacterContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
-    return SizedBox(
-      width: media.width * 0.75,
-      height: media.height * 0.18,
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 5,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 25),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        _title,
-                        style:
-                            Theme.of(context).textTheme.displaySmall!.copyWith(
-                                  fontSize: 30,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                        maxLines: 2,
-                      ),
-                      subtitle: Text(
-                        _status,
-                        style: Theme.of(context).textTheme.labelLarge,
-                        textAlign: TextAlign.justify,
+    final orientation = MediaQuery.of(context).orientation;
+    return Padding(
+      padding:
+          EdgeInsets.only(right: orientation == Orientation.landscape ? 20 : 10),
+      child: SizedBox(
+        width: orientation == Orientation.landscape
+            ? media.width * 0.90
+            : media.width * 0.74,
+        height: media.height * 0.3,
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 5,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 25),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          _title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                fontSize: 30,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                          maxLines: 2,
+                        ),
+                        subtitle: Text(
+                          _status,
+                          style: Theme.of(context).textTheme.labelLarge,
+                          textAlign: TextAlign.justify,
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                      onPressed: () => _moreDetails(),
-                      icon: const Icon(Icons.navigate_next_sharp))
-                ],
+                    IconButton(
+                        onPressed: () => _moreDetails(),
+                        icon: const Icon(Icons.navigate_next_sharp))
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

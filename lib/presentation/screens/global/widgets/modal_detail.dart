@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-void modalDetailsContent(
-  BuildContext context,
-  Widget child,
-) {
+void modalDetailsContent({
+ required BuildContext context,
+ required Widget child,
+}) {
   final media = MediaQuery.of(context).size;
   showModalBottomSheet(
     context: context,

@@ -33,7 +33,7 @@ class CharacterCubit extends Cubit<CharacterState> {
     });
   }
 
-  void fetchMoreLocations() {
+  void fetchMoreCharacters() {
     loadCharacters(page: state.page + 1);
   }
 

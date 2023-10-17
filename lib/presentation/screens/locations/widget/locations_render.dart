@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_morty_app/presentation/screens/locations/widget/widget.dart';
 
 import '../../../blocs/blocs.dart';
-import 'package:flutter/material.dart';
 import '../../global/widgets.dart';
 
 class LocationRender extends StatefulWidget {
@@ -32,9 +33,7 @@ class _LocationRenderState extends State<LocationRender> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const CustomTitle(
-        title: 'Ubicaciones',
-      ),
+      const HeaderWidgets(title: 'Ubicaciones'),
       Expanded(
         child: BlocConsumer<LocationCubit, LocationState>(
           listener: (context, state) {},
@@ -47,9 +46,12 @@ class _LocationRenderState extends State<LocationRender> {
                   title: state.locations[index].locationName,
                   sutitle: state.locations[index].locationType,
                   icon: Icons.location_searching,
-                  onTap: () {
-
-                  },
+                  onTap: () => modalDetailsContent(
+                    context: context,
+                    child: LocationDetail(
+                      location: state.locations[index],
+                    ),
+                  ),
                 );
               },
             );
