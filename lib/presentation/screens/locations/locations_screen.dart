@@ -11,21 +11,24 @@ class LocationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: SafeArea(child:
-          BlocBuilder<LocationCubit, LocationState>(builder: (context, state) {
-        if (state.isError) {
-          return CustomError(
-            errorDetails: FlutterErrorDetails(exception: state.error),
-            onRefresh: () => context.read<EpisodeCubit>().fetchMoreLocations(),
-          );
-        }
+      child: SafeArea(
+          child: BlocBuilder<LocationCubit, LocationState>(
+              buildWhen: (previous, current) => previous != current,
+              builder: (context, state) {
+                if (state.isError) {
+                  return CustomError(
+                    errorDetails: FlutterErrorDetails(exception: state.error),
+                    onRefresh: () =>
+                        context.read<EpisodeCubit>().fetchMoreLocations(),
+                  );
+                }
 
-        if (!state.isEmpty) {
-          return const LocationRender();
-        }
+                if (!state.isEmpty) {
+                  return const LocationRender();
+                }
 
-        return const CircularProgressIndicator(); //TODO: implement shimmer view
-      })),
+                return const CircularProgressIndicator(); //TODO: implement shimmer view
+              })),
     );
   }
 }

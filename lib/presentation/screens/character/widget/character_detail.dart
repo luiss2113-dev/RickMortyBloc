@@ -10,7 +10,7 @@ class CharacterDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final renderItems = buildContentDetail(context, character);
+    final renderItems = buildContentDetail(cox: context, character: character);
     return DetailContainer(
       child: Column(
         children: [
@@ -31,8 +31,10 @@ class CharacterDetail extends StatelessWidget {
   }
 }
 
-List<Widget> buildContentDetail(
-    BuildContext cox, CharacterItemModel character) {
+List<Widget> buildContentDetail({
+  required BuildContext cox,
+  required CharacterItemModel character,
+}) {
   return [
     DetailItem(
       icon: character.status,

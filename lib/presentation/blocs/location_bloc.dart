@@ -1,10 +1,8 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:rick_morty_app/domain/rick_morty_repository.dart';
-
-import '../../data/helpers/http_app.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'base_state.dart';
 import '../../domain/models/models.dart';
+import '../../data/helpers/http_app.dart';
 
 class LocationCubit extends Cubit<LocationState> {
   final RickMortyRepository _rickMortyRepository;
@@ -13,23 +11,23 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> loadLocations({int page = 1}) async {
     if (!state.isNext) return;
     if (page == 1) {
-      emit(state.copyWith(isLoading: true));
+      emit(state.copyWith(newIsLoading: true));
     }
     final result = await _rickMortyRepository.getLocations(page: page);
     result.when((failure) {
       emit(
         state.copyWith(
-          error: getErrorBloc(failure),
-          isLoading: false,
+          newError: getErrorBloc(failure),
+          newIsLoading: false,
         ),
       );
     }, (locations) {
       emit(state.copyWith(
-          error: "",
-          isLoading: false,
+          newError: "",
+          newIsLoading: false,
           locationsCurrent: [...state._locations, ...?locations.results],
-          page: page,
-          isNext: locations.isNext));
+          newPage: page,
+          newIsNext: locations.isNext));
     });
   }
 
@@ -38,55 +36,48 @@ class LocationCubit extends Cubit<LocationState> {
   }
 }
 
-class LocationState extends Equatable {
+class LocationState extends BaseBloc {
   final List<LocationItemModel> _locations;
-  final String _error;
-  final bool _isLoading;
-  final int _page;
-  final bool _isNext;
 
   const LocationState({
     List<LocationItemModel> locations = const [],
-    String error = '',
+    String msgError = '',
     bool isLoading = true,
     bool isNext = true,
     int page = 1,
   })  : _locations = locations,
-        _error = error,
-        _isLoading = isLoading,
-        _page = page,
-        _isNext = isNext;
+        super(
+          msgError: msgError,
+          isShowLoading: isLoading,
+          currentPage: page,
+          isNextPetition: isNext,
+        );
 
   List<LocationItemModel> get locations => _locations;
-  String get error => _error;
-  bool get isLoading => _isLoading;
-  int get page => _page;
-  bool get isError => _error != '';
-  bool get isNext => _isNext;
   bool get isEmpty => _locations.isEmpty;
-
-  @override
-  List<Object?> get props => [_locations, _error, _isLoading, _isNext];
-
-  @override
-  String toString() {
-    return 'LocationsState{locationsCurrent: ${_locations.length}, error: $_error, isLoading: $_isLoading, isNext: $_isNext}';
-  }
 
   LocationState copyWith({
     List<LocationItemModel>? locationsCurrent,
-    String? error,
-    bool? isLoading,
-    int? page,
-    bool? isNext,
+    String? newError,
+    bool? newIsLoading,
+    int? newPage,
+    bool? newIsNext,
   }) {
     return LocationState(
       locations: locationsCurrent ?? _locations,
-      error: error ?? _error,
-      isLoading: isLoading ?? _isLoading,
-      page: page ?? _page,
-      isNext: isNext ?? _isNext,
+      msgError: newError ?? error,
+      isLoading: newIsLoading ?? isLoading,
+      page: newPage ?? page,
+      isNext: newIsNext ?? isNext,
     );
+  }
+
+  @override
+  List<Object?> get props => [_locations, error, isLoading, isNext];
+
+  @override
+  String toString() {
+    return 'LocationsState{locationsCurrent: ${_locations.length}, error: $error, isLoading: $isLoading, isNext: $isNext}';
   }
 }
 

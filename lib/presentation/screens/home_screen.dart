@@ -1,6 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_morty_app/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'global/widgets.dart';
+
+import '../../domain/rick_morty_repository.dart';
+import '../blocs/blocs.dart' as bloc;
+import '../routes/routes.dart';
 
 class HomeScreen extends StatefulWidget {
   static const route = '/';
@@ -15,48 +19,31 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const [
-        CharactersScreen(),
-        EpisodesScreen(),
-        LocationsScreen()
-      ][selectedPageIndex],
+      body: _bodyScreen(selectedPageIndex),
       bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        height: 60,
-        elevation: 2,
-        selectedIndex: selectedPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedPageIndex = index;
-          });
-        },
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            selectedIcon: MyIcon(
-              icon: Icons.person_4_outlined,
-              isSelected: true,
-            ),
-            icon: MyIcon(icon: Icons.person_4_rounded),
-            label: 'Characters',
-          ),
-          NavigationDestination(
-            selectedIcon: MyIcon(
-              icon: Icons.view_carousel_outlined,
-              isSelected: true,
-            ),
-            icon: MyIcon(icon: Icons.view_carousel_rounded),
-            label: 'Episodes',
-          ),
-          NavigationDestination(
-            selectedIcon: MyIcon(
-              icon: Icons.location_on_outlined,
-              isSelected: true,
-            ),
-            icon: MyIcon(icon: Icons.location_on_rounded),
-            label: 'Locations',
-          ),
-        ],
-      ),
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          height: 60,
+          elevation: 2,
+          selectedIndex: selectedPageIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              selectedPageIndex = index;
+            });
+          },
+          destinations: Routes.menuNavigators()),
     );
+  }
+
+  _bodyScreen(int index) {
+    return [
+      BlocProvider(
+        create: (context) =>
+            bloc.CharacterBloc(context.read<RickMortyRepository>())
+              ..add(const bloc.GetCharacterEvent()),
+        child: const CharactersScreen(),
+      ),
+      const EpisodesScreen(),
+      const LocationsScreen()
+    ][index];
   }
 }

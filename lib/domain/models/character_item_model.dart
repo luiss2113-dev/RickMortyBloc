@@ -15,7 +15,7 @@ class CharacterItemModel extends CharacterEntity {
   final String? _url;
   final DateTime? _created;
 
-  CharacterItemModel({
+  const CharacterItemModel({
     super.id,
     super.name,
     super.status,
@@ -117,6 +117,22 @@ class CharacterItemModel extends CharacterEntity {
         "url": _url,
         "created": _created?.toIso8601String(),
       };
+
+  @override
+  List<Object?> get props => [
+        characterId,
+        characterName,
+        characterStatus,
+        characterImage,
+        _species,
+        _type,
+        _gender,
+        _origin,
+        _location,
+        _episode,
+        _url,
+        _created,
+      ];
 }
 
 class Location {

@@ -1,5 +1,6 @@
-import 'widget.dart';
 import 'package:rick_morty_app/presentation/blocs/blocs.dart';
+
+import 'widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/widgets.dart';
@@ -25,7 +26,7 @@ class _CharacterRenderState extends State<CharacterRender> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      context.read<CharacterCubit>().fetchMoreCharacters();
+      context.read<CharacterBloc>().add(const GetCharacterEvent());
     }
   }
 
@@ -34,15 +35,15 @@ class _CharacterRenderState extends State<CharacterRender> {
     return Column(children: [
       const HeaderWidgets(title: 'Personajes'),
       Expanded(
-        child: BlocConsumer<CharacterCubit, CharacterState>(
-          listener: (context, state) {},
+        child: BlocBuilder<CharacterBloc, CharacterState>(
+          buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
             return ListView.builder(
-              itemCount: state.characters.length,
+              itemCount: state.characters.results!.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return CharacterItem(
-                  character: state.characters[index],
+                  character: state.characters.results![index],
                 );
               },
             );

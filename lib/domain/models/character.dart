@@ -1,13 +1,15 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import 'character_item_model.dart';
 import 'response_info.dart';
 
-class Characters {
+class Characters extends Equatable {
   final ResponseInfo? info;
   final List<CharacterItemModel>? results;
 
-  Characters({
+  const Characters({
     this.info,
     this.results,
   });
@@ -20,8 +22,15 @@ class Characters {
         info: info ?? this.info,
         results: results ?? this.results,
       );
+  int get nextPage {
+    try {
+      return int.parse(info!.next!.split('=')[1]);
+    } catch (e) {
+      return 1;
+    }
+  }
 
-  bool get isNext => info?.next != null;
+  bool get hasNextPage => info?.next != null ? true : false;
 
   factory Characters.fromRawJson(String str) =>
       Characters.fromJson(json.decode(str));
@@ -42,4 +51,7 @@ class Characters {
             ? []
             : List<dynamic>.from(results!.map((x) => x.toJson())),
       };
+
+  @override
+  List<Object?> get props => [info, results];
 }

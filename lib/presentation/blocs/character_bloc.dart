@@ -1,112 +1,140 @@
+import 'package:equatable/equatable.dart';
 import 'package:rick_morty_app/domain/viewmodels/character_filter.dart';
 import 'package:rick_morty_app/domain/rick_morty_repository.dart';
 import 'package:rick_morty_app/data/helpers/http_app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'base_state.dart';
 import '../../domain/models/models.dart';
 
-class CharacterCubit extends Cubit<CharacterState> {
+class CharacterCubit extends Cubit<FeatureState> {
   final RickMortyRepository _rickMortyRepository;
 
-  CharacterCubit(this._rickMortyRepository) : super(const CharacterInitial());
+  CharacterCubit(this._rickMortyRepository) : super(FeatureInitial());
 
   Future<void> loadCharacters({int page = 1}) async {
-    if (!state.isNext) return;
-    if (page == 1) {
-      emit(state.copyWith(isLoading: true));
-    }
+    emit(FeatureCalled());
     final result = await _rickMortyRepository.getCharacters(page: page);
-    result.when((failure) {
-      emit(
-        state.copyWith(
-          error: getErrorBloc(failure),
-          isLoading: false,
-        ),
-      );
-    }, (characters) {
-      emit(state.copyWith(
-        error: "",
-        isLoading: false,
-        charactersCurrent: [...state.characters, ...?characters.results],
-        page: page,
-      ));
-    });
+    result.when(
+      (failure) {
+        emit(FeatureError(message: getErrorBloc(failure)));
+      },
+      (characters) {
+        emit(
+          FeatureLoaded(
+            info: characters.info,
+            charactersCurrent: [
+              ...state.charactersCurrent ?? [],
+              ...?characters.results
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void fetchMoreCharacters() {
-    loadCharacters(page: state.page + 1);
+    loadCharacters(page: 1);
   }
 
   Future<void> filterCharacters(CharacterFilters filters) async {
-    emit(state.copyWith(isLoading: true, error: ''));
+    emit(FeatureCalled());
     final result = await _rickMortyRepository.filterCharacters(filters);
-    result.when(
-        (failure) => emit(
-              state.copyWith(
-                error: getErrorBloc(failure),
-                isLoading: false,
-              ),
-            ), (characters) {
-      emit(state.copyWith(
-        error: "",
-        isLoading: false,
-        charactersCurrent: characters.results ?? [],
-        isNext: characters.isNext,
+    result.when((failure) => emit(FeatureError(message: getErrorBloc(failure))),
+        (characters) {
+      emit(FeatureLoaded(
+        info: characters.info,
+        charactersCurrent: [
+          ...state.charactersCurrent ?? [],
+          ...?characters.results
+        ],
       ));
     });
   }
 }
 
-class CharacterState extends Equatable {
+abstract class FeatureState extends Equatable {
+  final List<CharacterItemModel>? charactersCurrent;
+
+  const FeatureState({this.charactersCurrent});
+}
+
+class FeatureInitial extends FeatureState {
+  @override
+  List<Object?> get props => [];
+}
+
+class FeatureCalled extends FeatureState {
+  @override
+  List<Object?> get props => [];
+}
+
+class FeatureError extends FeatureState {
+  final String? message;
+
+  const FeatureError({this.message});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FeatureLoaded extends FeatureState {
+  final ResponseInfo? info;
+
+  const FeatureLoaded({
+    this.info,
+    super.charactersCurrent,
+  });
+
+  int get page => info?.pages ?? 1;
+  bool get isNext => info?.next != null;
+
+  @override
+  List<Object?> get props => [info, charactersCurrent];
+}
+
+class CharacterState extends BaseBloc {
   final List<CharacterItemModel> _charactersCurrent;
-  final int _page;
-  final String _error;
-  final bool _isLoading;
-  final bool _isNext;
 
   const CharacterState({
     List<CharacterItemModel> charactersCurrent = const [],
-    int page = 1,
     String error = '',
     bool isLoading = true,
     bool isNext = true,
-  })  : _isLoading = isLoading,
-        _error = error,
-        _page = page,
-        _charactersCurrent = charactersCurrent,
-        _isNext = isNext;
+    int page = 1,
+  })  : _charactersCurrent = charactersCurrent,
+        super(
+          msgError: error,
+          isShowLoading: isLoading,
+          currentPage: page,
+          isNextPetition: isNext,
+        );
 
   List<CharacterItemModel> get characters => _charactersCurrent;
-  int get page => _page;
-  bool get isLoading => _isLoading;
-  bool get isError => _error != '';
-  String get errorCurrent => _error;
-  bool get isNext => _isNext;
   bool get isEmpty => _charactersCurrent.isEmpty;
 
   CharacterState copyWith({
     List<CharacterItemModel>? charactersCurrent,
-    int? page,
-    String? error,
-    bool? isLoading,
-    bool? isNext,
+    String? newError,
+    bool? newIsLoading,
+    int? newPage,
+    bool? newIsNext,
   }) {
     return CharacterState(
       charactersCurrent: charactersCurrent ?? _charactersCurrent,
-      page: page ?? _page,
-      error: error ?? _error,
-      isLoading: isLoading ?? _isLoading,
-      isNext: isNext ?? _isNext,
+      error: newError ?? error,
+      isLoading: newIsLoading ?? isLoading,
+      page: newPage ?? page,
+      isNext: newIsNext ?? isNext,
     );
   }
 
   @override
   String toString() {
-    return 'CharacterState(charactersCurrent: ${_charactersCurrent.length}, page: $_page, error: $_error, isLoading: $_isLoading, isNext: $_isNext)';
+    return 'CharacterState(charactersCurrent: ${_charactersCurrent.length}, page: $page, error: $error, isLoading: $isLoading, isNext: $isNext)';
   }
 
   @override
-  List<Object> get props => [_charactersCurrent, _error, _isLoading, _isNext];
+  List<Object?> get props => [_charactersCurrent, error, isLoading, isNext];
 }
 
 class CharacterInitial extends CharacterState {

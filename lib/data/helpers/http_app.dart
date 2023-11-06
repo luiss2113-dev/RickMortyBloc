@@ -52,7 +52,7 @@ class HttpApp {
         'queryParameters': queryParameters,
         'url': url.toString()
       };
-      
+
       switch (method) {
         case HttpRequest.get:
           response = await _client.get(url, headers: headers);

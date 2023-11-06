@@ -138,7 +138,7 @@ void main() {
           LocationState(
               page: 1,
               isLoading: false,
-              error: getErrorBloc(ErrorFailure.noData))
+              msgError: getErrorBloc(ErrorFailure.noData))
         ];
       },
     );
