@@ -27,7 +27,7 @@ class EpisodeCubit extends Cubit<EpisodeState> {
         newIsLoading: false,
         episodesCurrent: [...state._episodes, ...?episodes.results],
         newPage: page,
-        newIsNext: episodes.isNext,
+        newIsNext: episodes.hasNextPage,
       ));
     });
   }

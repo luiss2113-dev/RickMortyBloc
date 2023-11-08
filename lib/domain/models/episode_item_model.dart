@@ -73,4 +73,8 @@ class EpisodeItemModel extends EpisodeEntity {
         "url": _url,
         "created": _created?.toIso8601String(),
       };
+
+  @override
+  List<Object?> get props =>
+      [episodeName, episodeId, episode, _airDate, _characters, _url, _created];
 }

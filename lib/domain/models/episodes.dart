@@ -1,12 +1,14 @@
+import 'package:equatable/equatable.dart';
+
 import 'response_info.dart';
 import 'episode_item_model.dart';
 import 'dart:convert';
 
-class Episodes {
+class Episodes extends Equatable {
   final ResponseInfo? info;
   final List<EpisodeItemModel>? results;
 
-  Episodes({
+  const Episodes({
     this.info,
     this.results,
   });
@@ -20,7 +22,15 @@ class Episodes {
         results: results ?? this.results,
       );
 
-  bool get isNext => info?.next != null;
+  bool get hasNextPage => info?.next != null ? true : false;
+
+  int get nextPage {
+    try {
+      return int.parse(info!.next!.split('=')[1]);
+    } catch (e) {
+      return 1;
+    }
+  }
 
   factory Episodes.fromRawJson(String str) =>
       Episodes.fromJson(json.decode(str));
@@ -41,4 +51,7 @@ class Episodes {
             ? []
             : List<dynamic>.from(results!.map((x) => x.toJson())),
       };
+
+  @override
+  List<Object?> get props => [info, results];
 }

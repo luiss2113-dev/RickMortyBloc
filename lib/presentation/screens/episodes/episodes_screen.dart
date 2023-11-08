@@ -1,5 +1,5 @@
+import 'package:rick_morty_app/presentation/blocs/blocs.dart';
 import 'package:rick_morty_app/presentation/screens/episodes/widget/widget.dart';
-import 'package:rick_morty_app/presentation/blocs/episode_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../global/widgets.dart';
@@ -12,23 +12,25 @@ class EpisodesScreen extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: SafeArea(
-          child: BlocBuilder<EpisodeCubit, EpisodeState>(
-              buildWhen: (previous, current) => previous != current,
-              builder: (context, state) {
-                if (state.isError) {
-                  return CustomError(
-                    errorDetails: FlutterErrorDetails(exception: state.error),
-                    onRefresh: () =>
-                        context.read<EpisodeCubit>().loadEpisodes(),
-                  );
-                }
-
-                if (!state.isEmpty) {
-                  return const EpisodeRender();
-                }
-
-                return const CircularProgressIndicator(); //TODO: implement shimmer view
-              })),
+        child: BlocBuilder<EpisodeBloc, EpisodeState>(
+          buildWhen: (previous, current) => previous != current,
+          builder: (context, state) {
+            switch (state.state) {
+              case BlocState.error:
+                return CustomError(
+                  errorDetails:
+                      FlutterErrorDetails(exception: state.messageError),
+                  onRefresh: () =>
+                      context.read<EpisodeBloc>().add(const GetEpisodeEvent()),
+                );
+              case BlocState.loaded:
+                return const EpisodeRender();
+              default:
+                return const CircularProgressIndicator();
+            }
+          },
+        ),
+      ),
     );
   }
 }

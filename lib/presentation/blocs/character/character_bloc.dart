@@ -50,4 +50,31 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       },
     );
   }
+
+  Future<void> filterCharacters(
+      FilterCharacterEvent event, Emitter<CharacterState> emit) async {
+    emit(state.copyWith(state: BlocState.loading));
+    final result = await _rickMortyRepository.filterCharacters(event.filters);
+    result.when(
+        (failure) => emit(state.copyWith(
+            state: BlocState.error,
+            message: getErrorBloc(failure))), (characters) {
+      emit(
+        state.copyWith(
+          state: BlocState.loaded,
+          characters: state.characters.copyWith(
+            info: ResponseInfo(
+              pages: characters.info?.pages,
+              next: characters.info?.next,
+              prev: characters.info?.prev,
+            ),
+            results: [
+              ...state.characters.results ?? [],
+              ...characters.results ?? []
+            ],
+          ),
+        ),
+      );
+    });
+  }
 }

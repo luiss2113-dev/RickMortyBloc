@@ -22,6 +22,7 @@ class Characters extends Equatable {
         info: info ?? this.info,
         results: results ?? this.results,
       );
+
   int get nextPage {
     try {
       return int.parse(info!.next!.split('=')[1]);

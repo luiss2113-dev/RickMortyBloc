@@ -10,8 +10,6 @@ class CharactersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Creando Widget Home');
-
     return Container(
       alignment: Alignment.center,
       child: SafeArea(

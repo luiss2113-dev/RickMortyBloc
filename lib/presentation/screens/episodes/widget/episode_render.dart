@@ -29,7 +29,7 @@ class _EpisodeRenderState extends State<EpisodeRender> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      context.read<EpisodeCubit>().fetchMoreLocations();
+      context.read<EpisodeBloc>().add(const GetEpisodeEvent());
     }
   }
 
@@ -38,20 +38,20 @@ class _EpisodeRenderState extends State<EpisodeRender> {
     return Column(children: [
       const HeaderWidgets(title: 'Episodios'),
       Expanded(
-        child: BlocConsumer<EpisodeCubit, EpisodeState>(
+        child: BlocConsumer<EpisodeBloc, EpisodeState>(
           listener: (context, state) {},
           builder: (context, state) {
             return ListView.builder(
-              itemCount: state.episodes.length,
+              itemCount: state.episodes.results!.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return TitleItem(
-                    title: state.episodes[index].episodeName,
-                    sutitle: state.episodes[index].episode,
+                    title: state.episodes.results![index].episodeName,
+                    sutitle: state.episodes.results![index].episode,
                     onTap: () => modalDetailsContent(
                           context: context,
                           child: EpisodeDetail(
-                            episode: state.episodes[index],
+                            episode: state.episodes.results![index],
                           ),
                         ));
               },

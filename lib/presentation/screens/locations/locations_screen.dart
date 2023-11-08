@@ -17,10 +17,9 @@ class LocationsScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state.isError) {
                   return CustomError(
-                    errorDetails: FlutterErrorDetails(exception: state.error),
-                    onRefresh: () =>
-                        context.read<EpisodeCubit>().fetchMoreLocations(),
-                  );
+                      errorDetails: FlutterErrorDetails(exception: state.error),
+                      onRefresh: () =>
+                          context.read<LocationCubit>()..fetchMoreLocations());
                 }
 
                 if (!state.isEmpty) {

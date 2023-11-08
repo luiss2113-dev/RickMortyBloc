@@ -1,9 +1,6 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_morty_app/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/rick_morty_repository.dart';
-import '../blocs/blocs.dart' as bloc;
 import '../routes/routes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,12 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _bodyScreen(int index) {
     return [
-      BlocProvider(
-        create: (context) =>
-            bloc.CharacterBloc(context.read<RickMortyRepository>())
-              ..add(const bloc.GetCharacterEvent()),
-        child: const CharactersScreen(),
-      ),
+      const CharactersScreen(),
       const EpisodesScreen(),
       const LocationsScreen()
     ][index];

@@ -17,9 +17,14 @@ void main() {
   runApp(RepositoryProvider<RickMortyRepository>(
       create: (_) => repository,
       child: MultiBlocProvider(providers: [
-        BlocProvider<EpisodeCubit>(
+        BlocProvider<CharacterBloc>(
+            create: (context) =>
+                CharacterBloc(context.read<RickMortyRepository>())
+                  ..add(const GetCharacterEvent())),
+        BlocProvider<EpisodeBloc>(
           create: (context) =>
-              EpisodeCubit(context.read<RickMortyRepository>())..loadEpisodes(),
+              EpisodeBloc((context.read<RickMortyRepository>()))
+                ..add(const GetEpisodeEvent()),
         ),
         BlocProvider<LocationCubit>(
           create: (context) =>
