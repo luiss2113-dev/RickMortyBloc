@@ -21,7 +21,7 @@ class CharacterImage extends StatelessWidget {
       child: Card(
         shape: const CircleBorder(),
         elevation: 10,
-        child: Container(
+        child: SizedBox(
           width: media.width *
               (orientation == Orientation.portrait ? width : 0.10),
           height: media.height *

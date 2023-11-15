@@ -38,8 +38,8 @@ class _EpisodeRenderState extends State<EpisodeRender> {
     return Column(children: [
       const HeaderWidgets(title: 'Episodios'),
       Expanded(
-        child: BlocConsumer<EpisodeBloc, EpisodeState>(
-          listener: (context, state) {},
+        child: BlocBuilder<EpisodeBloc, EpisodeState>(
+          buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
             return ListView.builder(
               itemCount: state.episodes.results!.length,

@@ -1,4 +1,4 @@
-import 'package:rick_morty_app/presentation/blocs/location_bloc.dart';
+import 'package:rick_morty_app/presentation/blocs/blocs.dart';
 import 'package:rick_morty_app/utils/enums.dart';
 import 'package:rick_morty_app/domain/rick_morty_repository.dart';
 import 'package:rick_morty_app/domain/models/models.dart';
@@ -20,11 +20,14 @@ void main() {
         dimension: 'httmc',
         type: 'Playa',
         residents: const ['Caramelo', 'cafe', 'postre']);
-    final info = ResponseInfo(count: 1, pages: 1, next: '?page=2', prev: '');
+    const info = ResponseInfo(pages: 1, next: 'null?page=2', prev: '');
     final response = Locations(info: info, results: [location]);
-    final responseEmpy = Locations(info: info, results: []);
-    final infoNotNext = ResponseInfo(count: 1, pages: 1, prev: '');
-    final lastResponse = Locations(info: infoNotNext, results: [location]);
+    const responseEmpy = Locations(info: info, results: []);
+    const lastInfo = ResponseInfo(
+      pages: 42,
+      next: null,
+    );
+    final lastResponse = Locations(info: lastInfo, results: [location]);
     final mockRepo = MockRickMortyRepository();
 
     blocTest(
@@ -33,20 +36,13 @@ void main() {
         when(mockRepo.getLocations())
             .thenAnswer((_) async => Future.value(Either.right(response)));
 
-        return LocationCubit(mockRepo);
+        return LocationsBloc(mockRepo);
       },
-      act: (bloc) => bloc.loadLocations(),
+      act: (bloc) => bloc.add(const GetLocationsEvent()),
       expect: () {
         return [
-          const LocationState(
-            page: 1,
-            isLoading: true,
-          ),
-          LocationState(
-            locations: response.results!,
-            page: 1,
-            isLoading: false,
-          )
+          const LocationsState(state: BlocState.loading),
+          LocationsState(locations: response, state: BlocState.loaded)
         ];
       },
     );
@@ -57,15 +53,27 @@ void main() {
         when(mockRepo.getLocations(page: 2))
             .thenAnswer((_) async => Future.value(Either.right(response)));
 
-        return LocationCubit(mockRepo);
+        return LocationsBloc(mockRepo);
       },
-      act: (bloc) => bloc.loadLocations(page: 2),
+      act: (bloc) {
+        bloc.emit(bloc.state.copyWith(
+          newLocations: response,
+          newState: BlocState.loaded,
+        ));
+        bloc.add(const GetLocationsEvent());
+      },
       expect: () {
         return [
-          LocationState(
-            locations: response.results!,
-            page: 2,
-            isLoading: false,
+          LocationsState(
+            state: BlocState.loaded,
+            locations: response,
+          ),
+          LocationsState(
+            state: BlocState.loaded,
+            locations: Locations(info: response.info, results: [
+              ...response.results!,
+              ...response.results!,
+            ]),
           )
         ];
       },
@@ -77,45 +85,35 @@ void main() {
         when(mockRepo.getLocations())
             .thenAnswer((_) async => Future.value(Either.right(responseEmpy)));
 
-        return LocationCubit(mockRepo);
+        return LocationsBloc(mockRepo);
       },
-      act: (bloc) => bloc.loadLocations(),
+      act: (bloc) => bloc.add(const GetLocationsEvent()),
       expect: () {
         return [
-          const LocationState(
-            page: 1,
-            isLoading: true,
-          ),
-          const LocationState(
-            page: 1,
-            isLoading: false,
-            isNext: true,
-          )
+          const LocationsState(state: BlocState.loading),
+          const LocationsState(state: BlocState.loaded, locations: responseEmpy)
         ];
       },
     );
 
     blocTest(
-      'Characters no call by function when next property is null',
+      'Locations no call by function when next property is null',
       build: () {
         when(mockRepo.getLocations())
             .thenAnswer((_) async => Future.value(Either.right(lastResponse)));
 
-        return LocationCubit(mockRepo);
+        return LocationsBloc(mockRepo);
       },
-      act: (bloc) => bloc.loadLocations(),
+      act: (bloc) {
+        bloc.emit(bloc.state.copyWith(
+          newLocations: lastResponse,
+          newState: BlocState.loaded,
+        ));
+        bloc.add(const GetLocationsEvent());
+      },
       expect: () {
         return [
-          const LocationState(
-            page: 1,
-            isLoading: true,
-          ),
-          LocationState(
-            page: 1,
-            isLoading: false,
-            locations: lastResponse.results!,
-            isNext: false,
-          )
+          LocationsState(state: BlocState.loaded, locations: lastResponse),
         ];
       },
     );
@@ -126,19 +124,15 @@ void main() {
         when(mockRepo.getLocations()).thenAnswer(
             (_) async => await Future.value(Either.left(ErrorFailure.noData)));
 
-        return LocationCubit(mockRepo);
+        return LocationsBloc(mockRepo);
       },
-      act: (bloc) => bloc.loadLocations(),
+      act: (bloc) => bloc.add(const GetLocationsEvent()),
       expect: () {
         return [
-          const LocationState(
-            page: 1,
-            isLoading: true,
-          ),
-          LocationState(
-              page: 1,
-              isLoading: false,
-              msgError: getErrorBloc(ErrorFailure.noData))
+          const LocationsState(state: BlocState.loading),
+          LocationsState(
+              state: BlocState.error,
+              messageError: getErrorBloc(ErrorFailure.noData))
         ];
       },
     );

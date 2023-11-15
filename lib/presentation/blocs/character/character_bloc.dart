@@ -35,14 +35,10 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
           state.copyWith(
             state: BlocState.loaded,
             characters: state.characters.copyWith(
-              info: ResponseInfo(
-                pages: characters.info?.pages,
-                next: characters.info?.next,
-                prev: characters.info?.prev,
-              ),
+              info: characters.info,
               results: [
                 ...state.characters.results ?? [],
-                ...characters.results ?? []
+                ...?characters.results,
               ],
             ),
           ),
