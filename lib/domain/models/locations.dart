@@ -1,13 +1,15 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import 'location_item_model.dart';
 import 'response_info.dart';
 
-class Locations {
+class Locations extends Equatable {
   final ResponseInfo? info;
   final List<LocationItemModel>? results;
 
-  Locations({
+  const Locations({
     this.info,
     this.results,
   });
@@ -21,7 +23,15 @@ class Locations {
         results: results ?? this.results,
       );
 
-  bool get isNext => info?.next != null;
+  bool get hasNextPage => info?.next != null ? true : false;
+
+  int get nextPage {
+    try {
+      return int.parse(info!.next!.split('=')[1]);
+    } catch (e) {
+      return 1;
+    }
+  }
 
   factory Locations.fromRawJson(String str) =>
       Locations.fromJson(json.decode(str));
@@ -42,4 +52,7 @@ class Locations {
             ? []
             : List<dynamic>.from(results!.map((x) => x.toJson())),
       };
+
+  @override
+  List<Object?> get props => [info, results];
 }

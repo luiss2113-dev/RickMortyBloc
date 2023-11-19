@@ -26,10 +26,10 @@ void main() {
               EpisodeBloc((context.read<RickMortyRepository>()))
                 ..add(const GetEpisodeEvent()),
         ),
-        BlocProvider<LocationCubit>(
+        BlocProvider<LocationsBloc>(
           create: (context) =>
-              LocationCubit(context.read<RickMortyRepository>())
-                ..loadLocations(),
+              LocationsBloc(context.read<RickMortyRepository>())
+                ..add(const GetLocationsEvent()),
         )
       ], child: const MyApp())));
 }

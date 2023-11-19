@@ -23,7 +23,6 @@ class LocationItemModel extends LocationEntity {
 
   String? get dimension => _dimension;
   int get countResidents => _residents?.length ?? 0;
-  
 
   LocationItemModel copyWith({
     int? id,
@@ -74,4 +73,15 @@ class LocationItemModel extends LocationEntity {
         "url": _url,
         "created": _created?.toIso8601String(),
       };
+
+  @override
+  List<Object?> get props => [
+        _dimension,
+        _residents,
+        _url,
+        _created,
+        locationName,
+        locationId,
+        locationType,
+      ];
 }

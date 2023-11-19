@@ -41,12 +41,7 @@ void main() {
       expect: () {
         return [
           const EpisodeState(state: BlocState.loading),
-          EpisodeState(
-              episodes: Episodes(
-                  info: const ResponseInfo(
-                      pages: 1, next: 'null?page=2', prev: ''),
-                  results: [episode]),
-              state: BlocState.loaded)
+          EpisodeState(episodes: response, state: BlocState.loaded)
         ];
       },
     );

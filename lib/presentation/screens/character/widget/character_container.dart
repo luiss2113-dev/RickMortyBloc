@@ -38,12 +38,13 @@ class _CharacterRenderState extends State<CharacterRender> {
         child: BlocBuilder<CharacterBloc, CharacterState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
+            final characters = state.characters.results;
             return ListView.builder(
-              itemCount: state.characters.results!.length,
+              itemCount: characters!.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return CharacterItem(
-                  character: state.characters.results![index],
+                  character: characters[index],
                 );
               },
             );

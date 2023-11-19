@@ -14,12 +14,8 @@ class CharacterDetail extends StatelessWidget {
     return DetailContainer(
       child: Column(
         children: [
-          Hero(
-            transitionOnUserGestures: true,
-            tag: character.tagHero,
-            child: CharacterImage(
-              url: character.characterImage,
-            ),
+          CharacterImage(
+            url: character.characterImage,
           ),
           CustomTitle(
             title: character.characterName,

@@ -26,7 +26,7 @@ class _LocationRenderState extends State<LocationRender> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      context.read<LocationCubit>().fetchMoreLocations();
+      context.read<LocationsBloc>().add(const GetLocationsEvent());
     }
   }
 
@@ -35,21 +35,22 @@ class _LocationRenderState extends State<LocationRender> {
     return Column(children: [
       const HeaderWidgets(title: 'Ubicaciones'),
       Expanded(
-        child: BlocConsumer<LocationCubit, LocationState>(
-          listener: (context, state) {},
+        child: BlocBuilder<LocationsBloc, LocationsState>(
+          buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
+            final locations = state.locations.results;
             return ListView.builder(
-              itemCount: state.locations.length, //locationCounter.length,
+              itemCount: locations!.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return TitleItem(
-                  title: state.locations[index].locationName,
-                  sutitle: state.locations[index].locationType,
+                  title: locations[index].locationName,
+                  sutitle: locations[index].locationType,
                   icon: Icons.location_searching,
                   onTap: () => modalDetailsContent(
                     context: context,
                     child: LocationDetail(
-                      location: state.locations[index],
+                      location: locations[index],
                     ),
                   ),
                 );
