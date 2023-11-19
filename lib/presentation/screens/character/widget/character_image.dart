@@ -1,12 +1,14 @@
+import 'widget.dart';
 import 'package:flutter/material.dart';
+import '../../../../domain/entities/entities.dart';
 
 class CharacterImage extends StatelessWidget {
   final double height;
   final double width;
-  final String url;
+  final String? url;
   const CharacterImage({
     super.key,
-    required this.url,
+    this.url,
     this.height = 0.18,
     this.width = 0.30,
   });
@@ -15,6 +17,8 @@ class CharacterImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
     final orientation = MediaQuery.of(context).orientation;
+    final CharacterEntity? character =
+        CharacterInherited.of(context)?.character;
 
     return Padding(
       padding: const EdgeInsets.only(left: 8, top: 8, right: 10),
@@ -28,7 +32,7 @@ class CharacterImage extends StatelessWidget {
               (orientation == Orientation.portrait ? height : 0.60),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
-              url,
+              character != null ? character.characterImage : '$url',
             ),
           ),
         ),
