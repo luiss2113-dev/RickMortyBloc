@@ -1,8 +1,9 @@
 import 'package:rick_morty_app/presentation/blocs/blocs.dart';
-import 'package:rick_morty_app/presentation/screens/episodes/widget/widget.dart';
+import 'package:rick_morty_app/presentation/screens/episodes/widget/widget.dart'
+    show EpisodeContainer;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../global/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
+import '../global/widgets.dart' show CustomError;
 
 class EpisodesScreen extends StatelessWidget {
   const EpisodesScreen({super.key});
@@ -24,7 +25,7 @@ class EpisodesScreen extends StatelessWidget {
                       context.read<EpisodeBloc>().add(const GetEpisodeEvent()),
                 );
               case BlocState.loaded:
-                return const EpisodeRender();
+                return const EpisodeContainer();
               default:
                 return const CircularProgressIndicator();
             }

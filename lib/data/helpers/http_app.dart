@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' show Client, Response, ClientException;
 import 'package:rick_morty_app/utils/constanst.dart';
 import 'package:rick_morty_app/utils/enums.dart';
 

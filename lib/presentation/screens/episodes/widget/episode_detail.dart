@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../../../domain/models/models.dart';
-import '../../global/widgets.dart';
+import '../../global/widgets.dart'
+    show DetailContainer, CustomTitle, DetailItem;
+import '../../../../domain/models/models.dart' show EpisodeItemModel;
 
 class EpisodeDetail extends StatelessWidget {
   final EpisodeItemModel _episode;

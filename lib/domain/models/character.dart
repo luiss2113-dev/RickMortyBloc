@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
-
-import 'character_item_model.dart';
 import 'response_info.dart';
+import 'package:equatable/equatable.dart' show Equatable;
+import 'dart:convert' show json;
+import 'character_item_model.dart';
 
 class Characters extends Equatable {
   final ResponseInfo? info;

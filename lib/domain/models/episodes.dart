@@ -1,8 +1,7 @@
-import 'package:equatable/equatable.dart';
-
 import 'response_info.dart';
+import 'package:equatable/equatable.dart' show Equatable;
 import 'episode_item_model.dart';
-import 'dart:convert';
+import 'dart:convert' show json;
 
 class Episodes extends Equatable {
   final ResponseInfo? info;

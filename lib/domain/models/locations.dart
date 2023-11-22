@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
-
-import 'location_item_model.dart';
 import 'response_info.dart';
+import 'package:equatable/equatable.dart' show Equatable;
+import 'location_item_model.dart';
+import 'dart:convert' show json;
 
 class Locations extends Equatable {
   final ResponseInfo? info;

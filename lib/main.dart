@@ -1,11 +1,15 @@
-import 'package:rick_morty_app/presentation/app.dart';
-import 'package:rick_morty_app/domain/rick_morty_repository.dart';
-import 'package:rick_morty_app/domain/repository/rick_morty_respository_impl.dart';
-import 'package:rick_morty_app/data/helpers/http_app.dart';
-import 'package:http/http.dart';
+import 'package:rick_morty_app/presentation/app.dart' show MyApp;
+import 'package:rick_morty_app/domain/rick_morty_repository.dart'
+    show RickMortyRepository;
+import 'package:rick_morty_app/domain/repository/rick_morty_respository_impl.dart'
+    show RickAndMortyRepositoryImpl;
+import 'package:rick_morty_app/data/helpers/http_app.dart' show HttpApp;
+import 'package:http/http.dart' show Client;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'data/datasource/remote/rick_morty_datasource_impl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show RepositoryProvider, MultiBlocProvider, BlocProvider, ReadContext;
+import 'data/datasource/remote/rick_morty_datasource_impl.dart'
+    show RickMortyRemoteDatasource;
 import 'presentation/blocs/blocs.dart';
 
 void main() {

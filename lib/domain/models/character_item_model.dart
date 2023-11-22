@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
-import '../../utils/enums.dart';
+import 'package:flutter/material.dart' show IconData;
+import 'dart:convert' show json;
 import '../entities/character_entity.dart';
+import '../../utils/enums.dart';
 
 class CharacterItemModel extends CharacterEntity {
   final String? _species;

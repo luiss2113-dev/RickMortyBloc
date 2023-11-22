@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
-import 'package:http/testing.dart';
+import 'package:http/http.dart' show Response;
+import 'package:http/testing.dart' show MockClient;
 import 'package:rick_morty_app/data/datasource/remote/rick_morty_datasource_impl.dart';
 import 'package:rick_morty_app/data/helpers/http_app.dart';
 import 'package:rick_morty_app/domain/viewmodels/character_filter.dart';

@@ -1,56 +1,44 @@
-import 'package:rick_morty_app/presentation/blocs/blocs.dart';
+import 'package:rick_morty_app/presentation/screens/global/widgets/response_body.dart';
 
-import 'widget.dart';
+import 'widget.dart' show CharacterItem;
+import 'package:rick_morty_app/presentation/blocs/blocs.dart'
+    show CharacterState, GetCharacterEvent, CharacterBloc;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../global/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
-class CharacterRender extends StatefulWidget {
-  const CharacterRender({super.key});
-
-  @override
-  State<CharacterRender> createState() => _CharacterRenderState();
-}
-
-class _CharacterRenderState extends State<CharacterRender> {
-  late ScrollController _scrollController;
-
-  @override
-  void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    super.initState();
-  }
-
-  void _scrollListener() {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      context.read<CharacterBloc>().add(const GetCharacterEvent());
-    }
-  }
+class CharacterContainer extends StatelessWidget {
+  const CharacterContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const HeaderWidgets(title: 'Personajes'),
-      Expanded(
-        child: BlocBuilder<CharacterBloc, CharacterState>(
-          buildWhen: (previous, current) => previous != current,
-          builder: (context, state) {
-            final characters = state.characters.results;
-            return ListView.builder(
-              itemCount: characters!.length,
-              controller: _scrollController,
-              itemBuilder: (context, index) {
-                return CharacterItem(
-                  character: characters[index],
-                );
-              },
+    return ResponseBody(
+      action: () =>
+          context.read<CharacterBloc>().add(const GetCharacterEvent()),
+      title: 'Personajes',
+      child: const ListBodyCharacter(),
+    );
+  }
+}
+
+class ListBodyCharacter extends StatelessWidget {
+  const ListBodyCharacter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CharacterBloc, CharacterState>(
+      buildWhen: (previous, current) =>
+          previous.characters != current.characters,
+      builder: (context, state) {
+        final characters = state.characters.results;
+        return SliverList.builder(
+          itemCount: characters!.length,
+          itemBuilder: (context, index) {
+            return CharacterItem(
+              character: characters[index],
             );
           },
-        ),
-      )
-    ]);
+        );
+      },
+    );
   }
 }
