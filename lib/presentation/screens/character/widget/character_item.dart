@@ -1,5 +1,6 @@
-import 'widget.dart';
-import 'package:rick_morty_app/domain/models/models.dart';
+import 'widget.dart' show CharacterInherited, CharacterContent, CharacterImage;
+import 'package:rick_morty_app/domain/models/models.dart'
+    show CharacterItemModel;
 import 'package:flutter/material.dart';
 
 class CharacterItem extends StatelessWidget {

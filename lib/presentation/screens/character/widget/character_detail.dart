@@ -1,8 +1,9 @@
-import 'widget.dart';
 import 'package:flutter/material.dart';
-import '../../global/widgets.dart';
-import '../../../../utils/enums.dart';
-import '../../../../domain/models/models.dart';
+import './widget.dart' show CharacterImage;
+import '../../global/widgets.dart'
+    show DetailContainer, CustomTitle, DetailItem;
+import '../../../../utils/enums.dart' show characterStatusValues;
+import '../../../../domain/models/models.dart' show CharacterItemModel;
 
 class CharacterDetail extends StatelessWidget {
   final CharacterItemModel character;

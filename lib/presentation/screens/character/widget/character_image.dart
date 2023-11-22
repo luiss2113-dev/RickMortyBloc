@@ -1,6 +1,8 @@
-import 'widget.dart';
+import 'widget.dart' show CharacterInherited;
 import 'package:flutter/material.dart';
-import '../../../../domain/entities/entities.dart';
+import 'package:cached_network_image/cached_network_image.dart'
+    show CachedNetworkImageProvider;
+import '../../../../domain/entities/entities.dart' show CharacterEntity;
 
 class CharacterImage extends StatelessWidget {
   final double height;
@@ -31,8 +33,12 @@ class CharacterImage extends StatelessWidget {
           height: media.height *
               (orientation == Orientation.portrait ? height : 0.60),
           child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              character != null ? character.characterImage : '$url',
+            backgroundImage: CachedNetworkImageProvider(
+              character?.characterImage ?? '$url',
+              cacheKey: character?.characterImage ?? '$url',
+              errorListener: (p0) {
+                () => const Icon(Icons.error);
+              },
             ),
           ),
         ),

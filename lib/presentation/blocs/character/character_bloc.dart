@@ -1,7 +1,7 @@
 import 'package:rick_morty_app/domain/models/models.dart';
 import 'package:rick_morty_app/domain/rick_morty_repository.dart';
 import 'package:rick_morty_app/domain/viewmodels/character_filter.dart';
-import 'package:equatable/equatable.dart';
+import 'package:equatable/equatable.dart' show Equatable;
 import 'package:bloc/bloc.dart';
 
 import '../../../data/helpers/http_app.dart';

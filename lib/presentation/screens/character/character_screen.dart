@@ -1,9 +1,10 @@
-import '../../blocs/blocs.dart';
-import 'widget/widget.dart';
-import 'package:rick_morty_app/presentation/screens/global/widgets/error_view.dart';
+import '../../blocs/blocs.dart'
+    show CharacterBloc, CharacterState, BlocState, GetCharacterEvent;
+import 'widget/widget.dart' show CharacterContainer;
+import 'package:rick_morty_app/presentation/screens/global/widgets/error_view.dart'
+    show CustomError;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../global/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
 class CharactersScreen extends StatelessWidget {
   const CharactersScreen({super.key});
@@ -18,7 +19,7 @@ class CharactersScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state.state) {
               case BlocState.loaded:
-                return const CharacterRender();
+                return const CharacterContainer();
               case BlocState.error:
                 return CustomError(
                   errorDetails: FlutterErrorDetails(

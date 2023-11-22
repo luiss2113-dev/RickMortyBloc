@@ -1,6 +1,5 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+import 'package:equatable/equatable.dart' show Equatable;
+import 'dart:convert' show json;
 
 class ResponseInfo extends Equatable {
   final int? count;

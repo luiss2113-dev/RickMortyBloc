@@ -1,9 +1,8 @@
+import 'widget.dart' show CharacterDetail, CharacterInherited;
 import 'package:flutter/material.dart';
-import 'package:rick_morty_app/domain/entities/entities.dart';
-
-import '../../../../utils/enums.dart';
-import '../../global/widgets.dart';
-import 'widget.dart';
+import '../../global/widgets.dart' show modalDetailsContent;
+import '../../../../utils/enums.dart' show characterStatusValues;
+import '../../../../domain/entities/entities.dart' show CharacterEntity;
 
 class CharacterContent extends StatelessWidget {
   const CharacterContent({super.key});
@@ -25,18 +24,18 @@ class CharacterContent extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: 5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              bodyContent(context),
-            ],
-          ),
+          child: const BodyNameCharacter(),
         ),
       ),
     );
   }
+}
 
-  Padding bodyContent(BuildContext context) {
+class BodyNameCharacter extends StatelessWidget {
+  const BodyNameCharacter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final CharacterEntity character = CharacterInherited.of(context)!.character;
 
     return Padding(
