@@ -12,22 +12,21 @@ class LocationsScreen extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: SafeArea(
-          child: BlocBuilder<LocationsBloc, LocationsState>(
-              buildWhen: (previous, current) => previous != current,
-              builder: (context, state) {
-                switch (state.state) {
-                  case BlocState.error:
-                    return CustomError(
-                        errorDetails:
-                            FlutterErrorDetails(exception: state.messageError),
-                        onRefresh: () => context.read<LocationsBloc>()
-                          ..add(const GetLocationsEvent()));
-                  case BlocState.loaded:
-                    return const LocationContainer();
-                  default:
-                    return const CircularProgressIndicator();
-                }
-              })),
+        child: BlocBuilder<LocationsBloc, LocationsState>(
+          buildWhen: (previous, current) => previous != current,
+          builder: (context, state) {
+            return switch (state.state) {
+              BlocState.loaded => const LocationContainer(),
+              BlocState.error => CustomError(
+                  errorDetails:
+                      FlutterErrorDetails(exception: state.messageError),
+                  onRefresh: () => context.read<LocationsBloc>()
+                    ..add(const GetLocationsEvent())),
+              _ => const CircularProgressIndicator()
+            };
+          },
+        ),
+      ),
     );
   }
 }

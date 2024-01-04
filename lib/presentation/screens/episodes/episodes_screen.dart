@@ -16,19 +16,16 @@ class EpisodesScreen extends StatelessWidget {
         child: BlocBuilder<EpisodeBloc, EpisodeState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
-            switch (state.state) {
-              case BlocState.error:
-                return CustomError(
+            return switch (state.state) {
+              BlocState.error => CustomError(
                   errorDetails:
                       FlutterErrorDetails(exception: state.messageError),
                   onRefresh: () =>
                       context.read<EpisodeBloc>().add(const GetEpisodeEvent()),
-                );
-              case BlocState.loaded:
-                return const EpisodeContainer();
-              default:
-                return const CircularProgressIndicator();
-            }
+                ),
+              BlocState.loaded => const EpisodeContainer(),
+              _ => const CircularProgressIndicator()
+            };
           },
         ),
       ),

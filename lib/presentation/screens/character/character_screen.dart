@@ -17,20 +17,17 @@ class CharactersScreen extends StatelessWidget {
         child: BlocBuilder<CharacterBloc, CharacterState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
-            switch (state.state) {
-              case BlocState.loaded:
-                return const CharacterContainer();
-              case BlocState.error:
-                return CustomError(
+            return switch (state.state) {
+              BlocState.loaded => const CharacterContainer(),
+              BlocState.error => CustomError(
                   errorDetails: FlutterErrorDetails(
                     exception: state.messageError,
                   ),
                   onRefresh: () => context.read<CharacterBloc>()
                     ..add(const GetCharacterEvent()),
-                );
-              default:
-                return const CircularProgressIndicator();
-            }
+                ),
+              _ => const CircularProgressIndicator()
+            };
           },
         ),
       ),
